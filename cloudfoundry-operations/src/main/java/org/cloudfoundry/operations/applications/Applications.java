@@ -39,4 +39,12 @@ public interface Applications {
      */
     Publisher<ApplicationSummary> list();
 
+    /**
+     * Pushes an application
+     *
+     * @param request the push application request
+     * @return an {@code onComplete} notification when push is complete
+     */
+    Mono<Void> push(PushApplicationRequest request);
+
 }
