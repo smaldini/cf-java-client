@@ -66,31 +66,31 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-invalid-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-invalid-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder()).build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             ListSharedDomainsRequest request2 = fillPage(ListSharedDomainsRequest.builder())
-                    .name("test-invalid-domain")
-                    .build();
+                .name("test-invalid-domain")
+                .build();
             ListSharedDomainsResponse response2 = ListSharedDomainsResponse.builder()
-                    .totalPages(1)
-                    .build();
+                .totalPages(1)
+                .build();
             when(this.sharedDomains.list(request2)).thenReturn(Mono.just(response2));
         }
 
         @Override
         protected void assertions(TestSubscriber<Boolean> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(false);
+                .assertEquals(false);
         }
 
         @Override
         protected Mono<Boolean> invoke() {
             CheckRouteRequest request = fill(CheckRouteRequest.builder(), "invalid-")
-                    .build();
+                .build();
 
             return this.routes.check(request);
         }
@@ -104,33 +104,33 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder())
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             RouteExistsRequest request2 = RouteExistsRequest.builder()
-                    .domainId("test-privateDomain-id")
-                    .host("test-invalid-host")
-                    .build();
+                .domainId("test-privateDomain-id")
+                .host("test-invalid-host")
+                .build();
             when(this.cloudFoundryClient.routes().exists(request2)).thenReturn(Mono.just(false));
         }
 
         @Override
         protected void assertions(TestSubscriber<Boolean> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(false);
+                .assertEquals(false);
         }
 
         @Override
         protected Mono<Boolean> invoke() {
             return this.routes.check(fill(CheckRouteRequest.builder())
-                    .host("test-invalid-host")
-                    .path(null)
-                    .build());
+                .host("test-invalid-host")
+                .path(null)
+                .build());
         }
 
     }
@@ -142,7 +142,7 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Boolean> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
@@ -159,31 +159,31 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             RouteExistsRequest request2 = fill(RouteExistsRequest.builder())
-                    .domainId("test-privateDomain-id")
-                    .build();
+                .domainId("test-privateDomain-id")
+                .build();
             when(this.cloudFoundryClient.routes().exists(request2)).thenReturn(Mono.just(true));
         }
 
         @Override
         protected void assertions(TestSubscriber<Boolean> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(true);
+                .assertEquals(true);
         }
 
         @Override
         protected Mono<Boolean> invoke() {
             return this.routes.check(fill(CheckRouteRequest.builder())
-                    .path("test-path")
-                    .build());
+                .path("test-path")
+                .build());
         }
 
     }
@@ -195,32 +195,32 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             RouteExistsRequest request2 = fill(RouteExistsRequest.builder())
-                    .domainId("test-privateDomain-id")
-                    .path(null)
-                    .build();
+                .domainId("test-privateDomain-id")
+                .path(null)
+                .build();
             when(this.cloudFoundryClient.routes().exists(request2)).thenReturn(Mono.just(true));
         }
 
         @Override
         protected void assertions(TestSubscriber<Boolean> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(true);
+                .assertEquals(true);
         }
 
         @Override
         protected Mono<Boolean> invoke() {
             return this.routes.check(fill(CheckRouteRequest.builder())
-                    .path(null)
-                    .build());
+                .path(null)
+                .build());
         }
 
     }
@@ -232,40 +232,40 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = ListOrganizationPrivateDomainsResponse.builder()
-                    .totalPages(1)
-                    .build();
+                .totalPages(1)
+                .build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             ListSharedDomainsRequest request2 = fillPage(ListSharedDomainsRequest.builder())
-                    .name("test-domain")
-                    .build();
+                .name("test-domain")
+                .build();
             ListSharedDomainsResponse response2 = fillPage(ListSharedDomainsResponse.builder(), "sharedDomains-")
-                    .resource(fill(SharedDomainResource.builder(), "sharedDomain-").build())
-                    .build();
+                .resource(fill(SharedDomainResource.builder(), "sharedDomain-").build())
+                .build();
             when(this.sharedDomains.list(request2)).thenReturn(Mono.just(response2));
 
             RouteExistsRequest request3 = fill(RouteExistsRequest.builder())
-                    .domainId("test-sharedDomain-id")
-                    .path(null)
-                    .build();
+                .domainId("test-sharedDomain-id")
+                .path(null)
+                .build();
             when(this.cloudFoundryClient.routes().exists(request3)).thenReturn(Mono.just(true));
         }
 
         @Override
         protected void assertions(TestSubscriber<Boolean> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(true);
+                .assertEquals(true);
         }
 
         @Override
         protected Mono<Boolean> invoke() {
             return this.routes.check(fill(CheckRouteRequest.builder())
-                    .path(null)
-                    .build());
+                .path(null)
+                .build());
         }
 
     }
@@ -277,24 +277,24 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpacesRequest request0 = fillPage(ListOrganizationSpacesRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name(TEST_SPACE_NAME)
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name(TEST_SPACE_NAME)
+                .build();
             ListOrganizationSpacesResponse response0 = fillPage(ListOrganizationSpacesResponse.builder())
-                    .resource(fill(SpaceResource.builder(), "orgSpace-").build())
-                    .build();
+                .resource(fill(SpaceResource.builder(), "orgSpace-").build())
+                .build();
             when(this.organizations.listSpaces(request0)).thenReturn(Mono.just(response0));
 
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-invalid-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-invalid-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder()).build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             ListSharedDomainsRequest request2 = fillPage(ListSharedDomainsRequest.builder())
-                    .name("test-invalid-domain")
-                    .build();
+                .name("test-invalid-domain")
+                .build();
             ListSharedDomainsResponse response2 = fillPage(ListSharedDomainsResponse.builder()).build();
             when(this.sharedDomains.list(request2)).thenReturn(Mono.just(response2));
         }
@@ -302,16 +302,16 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalArgumentException.class);
+                .assertError(IllegalArgumentException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             CreateRouteRequest request = CreateRouteRequest.builder()
-                    .domain("test-invalid-domain")
-                    .host("test-any-host")
-                    .space(TEST_SPACE_NAME)
-                    .build();
+                .domain("test-invalid-domain")
+                .host("test-any-host")
+                .space(TEST_SPACE_NAME)
+                .build();
 
             return this.routes.create(request);
         }
@@ -325,44 +325,44 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpacesRequest request0 = fillPage(ListOrganizationSpacesRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-routeSpace-name")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-routeSpace-name")
+                .build();
             ListOrganizationSpacesResponse response0 = fillPage(ListOrganizationSpacesResponse.builder())
-                    .resource(fill(SpaceResource.builder(), "orgSpace-").build())
-                    .build();
+                .resource(fill(SpaceResource.builder(), "orgSpace-").build())
+                .build();
             when(this.organizations.listSpaces(request0)).thenReturn(Mono.just(response0));
 
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder())
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             org.cloudfoundry.client.v2.routes.CreateRouteRequest request2 = org.cloudfoundry.client.v2.routes.CreateRouteRequest.builder()
-                    .domainId("test-privateDomain-id")
-                    .host("test-invalid-host")
-                    .spaceId("test-orgSpace-id")
-                    .build();
+                .domainId("test-privateDomain-id")
+                .host("test-invalid-host")
+                .spaceId("test-orgSpace-id")
+                .build();
             when(this.cloudFoundryClient.routes().create(request2)).thenThrow(new CloudFoundryException(-1, "", ""));
         }
 
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(CloudFoundryException.class);
+                .assertError(CloudFoundryException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             CreateRouteRequest request = CreateRouteRequest.builder()
-                    .domain("test-domain")
-                    .host("test-invalid-host")
-                    .space("test-routeSpace-name")
-                    .build();
+                .domain("test-domain")
+                .host("test-invalid-host")
+                .space("test-routeSpace-name")
+                .build();
 
             return this.routes.create(request);
         }
@@ -376,9 +376,9 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpacesRequest request0 = fillPage(ListOrganizationSpacesRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-routeSpace-name")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-routeSpace-name")
+                .build();
             ListOrganizationSpacesResponse response0 = fillPage(ListOrganizationSpacesResponse.builder()).build();
             when(this.organizations.listSpaces(request0)).thenReturn(Mono.just(response0));
         }
@@ -386,16 +386,16 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalArgumentException.class);
+                .assertError(IllegalArgumentException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             CreateRouteRequest request = CreateRouteRequest.builder()
-                    .domain("test-any-domain")
-                    .host("test-any-host")
-                    .space("test-routeSpace-name")
-                    .build();
+                .domain("test-any-domain")
+                .host("test-any-host")
+                .space("test-routeSpace-name")
+                .build();
 
             return this.routes.create(request);
         }
@@ -409,7 +409,7 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
@@ -428,35 +428,35 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpacesRequest request0 = fillPage(ListOrganizationSpacesRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-specific-space")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-specific-space")
+                .build();
             ListOrganizationSpacesResponse response0 = fillPage(ListOrganizationSpacesResponse.builder())
-                    .resource(fill(SpaceResource.builder(), "ourSpace-").build())
-                    .build();
+                .resource(fill(SpaceResource.builder(), "ourSpace-").build())
+                .build();
             when(this.organizations.listSpaces(request0)).thenReturn(Mono.just(response0));
 
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-specific-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-specific-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder()).build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             ListSharedDomainsRequest request2 = fillPage(ListSharedDomainsRequest.builder())
-                    .name("test-specific-domain")
-                    .build();
+                .name("test-specific-domain")
+                .build();
             ListSharedDomainsResponse response2 = fillPage(ListSharedDomainsResponse.builder())
-                    .resource(fill(SharedDomainResource.builder(), "specificDomain-").build())
-                    .build();
+                .resource(fill(SharedDomainResource.builder(), "specificDomain-").build())
+                .build();
             when(this.sharedDomains.list(request2)).thenReturn(Mono.just(response2));
 
             org.cloudfoundry.client.v2.routes.CreateRouteRequest request3 = org.cloudfoundry.client.v2.routes.CreateRouteRequest.builder()
-                    .domainId("test-specificDomain-id")
-                    .host("test-specific-host")
-                    .path("test-specific-path")
-                    .spaceId("test-ourSpace-id")
-                    .build();
+                .domainId("test-specificDomain-id")
+                .host("test-specific-host")
+                .path("test-specific-path")
+                .spaceId("test-ourSpace-id")
+                .build();
             CreateRouteResponse response3 = CreateRouteResponse.builder().build();
             when(this.cloudFoundryClient.routes().create(request3)).thenReturn(Mono.just(response3));
         }
@@ -469,8 +469,8 @@ public final class DefaultRoutesTest {
         @Override
         protected Publisher<Void> invoke() {
             CreateRouteRequest request = fill(CreateRouteRequest.builder(), "specific-")
-                    .path("test-specific-path")
-                    .build();
+                .path("test-specific-path")
+                .build();
 
             return this.routes.create(request);
         }
@@ -484,28 +484,28 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpacesRequest request0 = fillPage(ListOrganizationSpacesRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-specific-space")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-specific-space")
+                .build();
             ListOrganizationSpacesResponse response0 = fillPage(ListOrganizationSpacesResponse.builder())
-                    .resource(fill(SpaceResource.builder(), "specific-space-").build())
-                    .build();
+                .resource(fill(SpaceResource.builder(), "specific-space-").build())
+                .build();
             when(this.organizations.listSpaces(request0)).thenReturn(Mono.just(response0));
 
             ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-specific-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-specific-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder())
-                    .resource(fill(PrivateDomainResource.builder(), "private-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "private-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
 
             org.cloudfoundry.client.v2.routes.CreateRouteRequest request2 = org.cloudfoundry.client.v2.routes.CreateRouteRequest.builder()
-                    .domainId("test-private-id")
-                    .host("test-specific-host")
-                    .spaceId("test-specific-space-id")
-                    .build();
+                .domainId("test-private-id")
+                .host("test-specific-host")
+                .spaceId("test-specific-space-id")
+                .build();
             CreateRouteResponse response2 = CreateRouteResponse.builder().build();
             when(this.cloudFoundryClient.routes().create(request2)).thenReturn(Mono.just(response2));
         }
@@ -518,8 +518,8 @@ public final class DefaultRoutesTest {
         @Override
         protected Publisher<Void> invoke() {
             CreateRouteRequest request = fill(CreateRouteRequest.builder(), "specific-")
-                    .path(null)
-                    .build();
+                .path(null)
+                .build();
 
             return this.routes.create(request);
         }
@@ -533,59 +533,59 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             org.cloudfoundry.client.v2.routes.ListRoutesRequest request1 = org.cloudfoundry.client.v2.routes.ListRoutesRequest.builder()
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .page(1)
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .page(1)
+                .build();
             ListRoutesResponse response1 = fillPage(ListRoutesResponse.builder())
-                    .resource(fill(RouteResource.builder(), "route-")
-                            .entity(fill(RouteEntity.builder(), "routeEntity-").build())
-                            .build())
-                    .build();
+                .resource(fill(RouteResource.builder(), "route-")
+                    .entity(fill(RouteEntity.builder(), "routeEntity-").build())
+                    .build())
+                .build();
             when(this.cloudFoundryClient.routes().list(request1)).thenReturn(Mono.just(response1));
 
             GetDomainRequest request2 = GetDomainRequest.builder()
-                    .domainId("test-routeEntity-domainId")
-                    .build();
+                .domainId("test-routeEntity-domainId")
+                .build();
             GetDomainResponse response2 = fill(GetDomainResponse.builder(), "domain-").build();
 
             when(this.cloudFoundryClient.domains().get(request2)).thenReturn(Mono.just(response2));
 
             GetSpaceRequest request3 = GetSpaceRequest.builder()
-                    .spaceId("test-routeEntity-spaceId")
-                    .build();
+                .spaceId("test-routeEntity-spaceId")
+                .build();
             GetSpaceResponse response3 = GetSpaceResponse.builder()
-                    .entity(fill(SpaceEntity.builder(), "space-response-").build())
-                    .build();
+                .entity(fill(SpaceEntity.builder(), "space-response-").build())
+                .build();
             when(this.cloudFoundryClient.spaces().get(request3)).thenReturn(Mono.just(response3));
 
             ListRouteApplicationsRequest request4 = fillPage(ListRouteApplicationsRequest.builder(), "route-")
-                    .routeId("test-route-id")
-                    .diego(null)
-                    .build();
+                .routeId("test-route-id")
+                .diego(null)
+                .build();
             ListRouteApplicationsResponse response4 = fillPage(ListRouteApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder(), "application-").build())
-                    .build();
+                .resource(fill(ApplicationResource.builder(), "application-").build())
+                .build();
             when(this.cloudFoundryClient.routes().listApplications(request4)).thenReturn(Mono.just(response4));
         }
 
         @Override
         protected void assertions(TestSubscriber<Route> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(Route.builder()
-                            .application("test-application-name")
-                            .domain("test-domain-name")
-                            .host("test-routeEntity-host")
-                            .path("test-routeEntity-path")
-                            .routeId("test-route-id")
-                            .space("test-space-response-name")
-                            .build());
+                .assertEquals(Route.builder()
+                    .application("test-application-name")
+                    .domain("test-domain-name")
+                    .host("test-routeEntity-host")
+                    .path("test-routeEntity-path")
+                    .routeId("test-route-id")
+                    .space("test-space-response-name")
+                    .build());
         }
 
         @Override
         protected Publisher<Route> invoke() {
             ListRoutesRequest request = ListRoutesRequest.builder()
-                    .level(ListRoutesRequest.Level.ORGANIZATION)
-                    .build();
+                .level(ListRoutesRequest.Level.ORGANIZATION)
+                .build();
 
             return this.routes.list(request);
         }
@@ -598,14 +598,14 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Route> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Route> invoke() {
             ListRoutesRequest request = ListRoutesRequest.builder()
-                    .level(ListRoutesRequest.Level.SPACE)
-                    .build();
+                .level(ListRoutesRequest.Level.SPACE)
+                .build();
 
             return this.routes.list(request);
         }
@@ -618,53 +618,53 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListSpaceRoutesRequest request1 = fillPage(ListSpaceRoutesRequest.builder(), "space-")
-                    .spaceId(TEST_SPACE_ID)
-                    .build();
+                .spaceId(TEST_SPACE_ID)
+                .build();
             ListSpaceRoutesResponse response1 = fillPage(ListSpaceRoutesResponse.builder(), "spaceRoute-")
-                    .resource(fill(RouteResource.builder(), "route-").build())
-                    .build();
+                .resource(fill(RouteResource.builder(), "route-").build())
+                .build();
             when(this.cloudFoundryClient.spaces().listRoutes(request1)).thenReturn(Mono.just(response1));
 
             GetDomainRequest request2 = GetDomainRequest.builder()
-                    .domainId("test-route-domainId")
-                    .build();
+                .domainId("test-route-domainId")
+                .build();
             GetDomainResponse response2 = fill(GetDomainResponse.builder(), "domain-").build();
             when(this.cloudFoundryClient.domains().get(request2)).thenReturn(Mono.just(response2));
 
             GetSpaceRequest request3 = GetSpaceRequest.builder()
-                    .spaceId("test-route-spaceId")
-                    .build();
+                .spaceId("test-route-spaceId")
+                .build();
             GetSpaceResponse response3 = fill(GetSpaceResponse.builder(), "space-").build();
             when(this.cloudFoundryClient.spaces().get(request3)).thenReturn(Mono.just(response3));
 
             ListRouteApplicationsRequest request4 = ListRouteApplicationsRequest.builder()
-                    .routeId("test-route-id")
-                    .page(1)
-                    .build();
+                .routeId("test-route-id")
+                .page(1)
+                .build();
             ListRouteApplicationsResponse response4 = fillPage(ListRouteApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder(), "routeApplication-").build())
-                    .build();
+                .resource(fill(ApplicationResource.builder(), "routeApplication-").build())
+                .build();
             when(this.cloudFoundryClient.routes().listApplications(request4)).thenReturn(Mono.just(response4));
         }
 
         @Override
         protected void assertions(TestSubscriber<Route> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(Route.builder()
-                            .routeId("test-route-id")
-                            .application("test-routeApplication-name")
-                            .domain("test-domain-name")
-                            .host("test-route-host")
-                            .path("test-route-path")
-                            .space(TEST_SPACE_NAME)
-                            .build());
+                .assertEquals(Route.builder()
+                    .routeId("test-route-id")
+                    .application("test-routeApplication-name")
+                    .domain("test-domain-name")
+                    .host("test-route-host")
+                    .path("test-route-path")
+                    .space(TEST_SPACE_NAME)
+                    .build());
         }
 
         @Override
         protected Publisher<Route> invoke() {
             ListRoutesRequest request = ListRoutesRequest.builder()
-                    .level(ListRoutesRequest.Level.SPACE)
-                    .build();
+                .level(ListRoutesRequest.Level.SPACE)
+                .build();
 
             return this.routes.list(request);
         }
@@ -677,14 +677,14 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Route> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Route> invoke() {
             ListRoutesRequest request = ListRoutesRequest.builder()
-                    .level(ListRoutesRequest.Level.SPACE)
-                    .build();
+                .level(ListRoutesRequest.Level.SPACE)
+                .build();
 
             return this.routes.list(request);
         }
@@ -697,14 +697,14 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Route> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Route> invoke() {
             ListRoutesRequest request = ListRoutesRequest.builder()
-                    .level(ListRoutesRequest.Level.SPACE)
-                    .build();
+                .level(ListRoutesRequest.Level.SPACE)
+                .build();
 
             return this.routes.list(request);
         }
@@ -717,14 +717,14 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(RequestValidationException.class);
+                .assertError(RequestValidationException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             MapRouteRequest request = fill(MapRouteRequest.builder())
-                    .applicationName(null)
-                    .build();
+                .applicationName(null)
+                .build();
 
             return this.routes.map(request);
         }
@@ -737,14 +737,14 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(RequestValidationException.class);
+                .assertError(RequestValidationException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             MapRouteRequest request = fill(MapRouteRequest.builder())
-                    .domain(null)
-                    .build();
+                .domain(null)
+                .build();
 
             return this.routes.map(request);
         }
@@ -757,13 +757,13 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             MapRouteRequest request = fill(MapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.routes.map(request);
         }
@@ -776,41 +776,41 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
-                    .diego(null)
-                    .name("test-applicationName")
-                    .spaceId("test-space-id")
-                    .build();
+                .diego(null)
+                .name("test-applicationName")
+                .spaceId("test-space-id")
+                .build();
             ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder())
-                            .build())
-                    .build();
+                .resource(fill(ApplicationResource.builder())
+                    .build())
+                .build();
             when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
 
             ListOrganizationPrivateDomainsRequest request2 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response2 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request2)).thenReturn(Mono.just(response2));
 
             org.cloudfoundry.client.v2.routes.CreateRouteRequest request3 = fill(org.cloudfoundry.client.v2.routes.CreateRouteRequest.builder())
-                    .domainId("test-privateDomain-id")
-                    .generatePort(null)
-                    .port(null)
-                    .spaceId(TEST_SPACE_ID)
-                    .build();
+                .domainId("test-privateDomain-id")
+                .generatePort(null)
+                .port(null)
+                .spaceId(TEST_SPACE_ID)
+                .build();
             CreateRouteResponse response3 = fill(CreateRouteResponse.builder(), "createdRoute-")
-                    .build();
+                .build();
             when(this.routes.create(request3)).thenReturn(Mono.just(response3));
 
             AssociateApplicationRouteRequest request4 = fill(AssociateApplicationRouteRequest.builder())
-                    .applicationId("test-id")
-                    .routeId("test-createdRoute-id")
-                    .build();
+                .applicationId("test-id")
+                .routeId("test-createdRoute-id")
+                .build();
             AssociateApplicationRouteResponse response4 = fill(AssociateApplicationRouteResponse.builder())
-                    .build();
+                .build();
             when(this.applications.associateRoute(request4)).thenReturn(Mono.just(response4));
         }
 
@@ -822,7 +822,7 @@ public final class DefaultRoutesTest {
         @Override
         protected Publisher<Void> invoke() {
             MapRouteRequest request = fill(MapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.operationRoutes.map(request);
         }
@@ -835,48 +835,48 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
-                    .diego(null)
-                    .name("test-applicationName")
-                    .spaceId("test-space-id")
-                    .build();
+                .diego(null)
+                .name("test-applicationName")
+                .spaceId("test-space-id")
+                .build();
             ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder())
-                            .build())
-                    .build();
+                .resource(fill(ApplicationResource.builder())
+                    .build())
+                .build();
             when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
 
             ListOrganizationPrivateDomainsRequest request2 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response2 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .build();
+                .build();
             when(this.organizations.listPrivateDomains(request2)).thenReturn(Mono.just(response2));
 
             ListSharedDomainsRequest request3 = fillPage(ListSharedDomainsRequest.builder())
-                    .name("test-domain")
-                    .build();
+                .name("test-domain")
+                .build();
             ListSharedDomainsResponse response3 = fillPage(ListSharedDomainsResponse.builder(), "sharedDomains-")
-                    .resource(fill(SharedDomainResource.builder(), "sharedDomain-").build())
-                    .build();
+                .resource(fill(SharedDomainResource.builder(), "sharedDomain-").build())
+                .build();
             when(this.sharedDomains.list(request3)).thenReturn(Mono.just(response3));
 
             org.cloudfoundry.client.v2.routes.CreateRouteRequest request4 = fill(org.cloudfoundry.client.v2.routes.CreateRouteRequest.builder())
-                    .domainId("test-sharedDomain-id")
-                    .generatePort(null)
-                    .port(null)
-                    .spaceId(TEST_SPACE_ID)
-                    .build();
+                .domainId("test-sharedDomain-id")
+                .generatePort(null)
+                .port(null)
+                .spaceId(TEST_SPACE_ID)
+                .build();
             CreateRouteResponse response4 = fill(CreateRouteResponse.builder(), "createdRoute-")
-                    .build();
+                .build();
             when(this.routes.create(request4)).thenReturn(Mono.just(response4));
 
             AssociateApplicationRouteRequest request5 = fill(AssociateApplicationRouteRequest.builder())
-                    .applicationId("test-id")
-                    .routeId("test-createdRoute-id")
-                    .build();
+                .applicationId("test-id")
+                .routeId("test-createdRoute-id")
+                .build();
             AssociateApplicationRouteResponse response5 = fill(AssociateApplicationRouteResponse.builder())
-                    .build();
+                .build();
             when(this.applications.associateRoute(request5)).thenReturn(Mono.just(response5));
         }
 
@@ -888,7 +888,7 @@ public final class DefaultRoutesTest {
         @Override
         protected Publisher<Void> invoke() {
             MapRouteRequest request = fill(MapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.operationRoutes.map(request);
         }
@@ -901,27 +901,27 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
-                    .diego(null)
-                    .name("test-applicationName")
-                    .spaceId("test-space-id")
-                    .build();
+                .diego(null)
+                .name("test-applicationName")
+                .spaceId("test-space-id")
+                .build();
             ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder())
-                            .build())
-                    .build();
+                .resource(fill(ApplicationResource.builder())
+                    .build())
+                .build();
             when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
         }
 
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             MapRouteRequest request = fill(MapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.operationRoutes.map(request);
         }
@@ -934,14 +934,14 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(RequestValidationException.class);
+                .assertError(RequestValidationException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .applicationName(null)
-                    .build();
+                .applicationName(null)
+                .build();
 
             return this.routes.unmap(request);
         }
@@ -954,16 +954,74 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(RequestValidationException.class);
+                .assertError(RequestValidationException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .domain(null)
-                    .build();
+                .domain(null)
+                .build();
 
             return this.routes.unmap(request);
+        }
+    }
+
+    public static final class UnmapRouteNoHost extends AbstractOperationsApiTest<Void> {
+
+        private final DefaultRoutes operationRoutes = new DefaultRoutes(this.cloudFoundryClient, Mono.just(TEST_ORGANIZATION_ID), Mono.just(TEST_SPACE_ID));
+
+        @Before
+        public void setUp() throws Exception {
+            ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
+                .diego(null)
+                .name("test-applicationName")
+                .spaceId("test-space-id")
+                .build();
+            ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
+                .resource(fill(ApplicationResource.builder(), "application-")
+                    .build())
+                .build();
+            when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
+
+            ListOrganizationPrivateDomainsRequest request2 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
+            ListOrganizationPrivateDomainsResponse response2 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
+            when(this.organizations.listPrivateDomains(request2)).thenReturn(Mono.just(response2));
+
+            org.cloudfoundry.client.v2.routes.ListRoutesRequest request3 = fillPage(org.cloudfoundry.client.v2.routes.ListRoutesRequest.builder())
+                .domainId("test-privateDomain-id")
+                .host(null)
+                .organizationId(null)
+                .build();
+            ListRoutesResponse response3 = fillPage(ListRoutesResponse.builder())
+                .resource(fill(RouteResource.builder(), "route-").build())
+                .build();
+            when(this.routes.list(request3)).thenReturn(Mono.just(response3));
+
+            RemoveRouteApplicationRequest request4 = fill(RemoveRouteApplicationRequest.builder())
+                .applicationId("test-application-id")
+                .routeId("test-route-id")
+                .build();
+            when(this.routes.removeApplication(request4)).thenReturn(Mono.<Void>empty());
+        }
+
+        @Override
+        protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
+            // Expects onComplete() with no onNext()
+        }
+
+        @Override
+        protected Publisher<Void> invoke() {
+            UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
+                .host(null)
+                .build();
+
+            return this.operationRoutes.unmap(request);
         }
     }
 
@@ -974,13 +1032,13 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.routes.unmap(request);
         }
@@ -993,13 +1051,13 @@ public final class DefaultRoutesTest {
         @Override
         protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
         protected Publisher<Void> invoke() {
             UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.routes.unmap(request);
         }
@@ -1012,39 +1070,39 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
-                    .diego(null)
-                    .name("test-applicationName")
-                    .spaceId("test-space-id")
-                    .build();
+                .diego(null)
+                .name("test-applicationName")
+                .spaceId("test-space-id")
+                .build();
             ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder(), "application-")
-                            .build())
-                    .build();
+                .resource(fill(ApplicationResource.builder(), "application-")
+                    .build())
+                .build();
             when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
 
             ListOrganizationPrivateDomainsRequest request2 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response2 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
+                .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
+                .build();
             when(this.organizations.listPrivateDomains(request2)).thenReturn(Mono.just(response2));
 
             org.cloudfoundry.client.v2.routes.ListRoutesRequest request3 = fillPage(org.cloudfoundry.client.v2.routes.ListRoutesRequest.builder())
-                    .domainId("test-privateDomain-id")
-                    .host("test-host")
-                    .organizationId(null)
-                    .build();
+                .domainId("test-privateDomain-id")
+                .host("test-host")
+                .organizationId(null)
+                .build();
             ListRoutesResponse response3 = fillPage(ListRoutesResponse.builder())
-                    .resource(fill(RouteResource.builder(), "route-").build())
-                    .build();
+                .resource(fill(RouteResource.builder(), "route-").build())
+                .build();
             when(this.routes.list(request3)).thenReturn(Mono.just(response3));
 
             RemoveRouteApplicationRequest request4 = fill(RemoveRouteApplicationRequest.builder())
-                    .applicationId("test-application-id")
-                    .routeId("test-route-id")
-                    .build();
+                .applicationId("test-application-id")
+                .routeId("test-route-id")
+                .build();
             when(this.routes.removeApplication(request4)).thenReturn(Mono.<Void>empty());
         }
 
@@ -1056,65 +1114,7 @@ public final class DefaultRoutesTest {
         @Override
         protected Publisher<Void> invoke() {
             UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .build();
-
-            return this.operationRoutes.unmap(request);
-        }
-    }
-    
-    public static final class UnmapRouteNoHost extends AbstractOperationsApiTest<Void> {
-
-        private final DefaultRoutes operationRoutes = new DefaultRoutes(this.cloudFoundryClient, Mono.just(TEST_ORGANIZATION_ID), Mono.just(TEST_SPACE_ID));
-
-        @Before
-        public void setUp() throws Exception {
-            ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
-                    .diego(null)
-                    .name("test-applicationName")
-                    .spaceId("test-space-id")
-                    .build();
-            ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder(), "application-")
-                            .build())
-                    .build();
-            when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
-
-            ListOrganizationPrivateDomainsRequest request2 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
-            ListOrganizationPrivateDomainsResponse response2 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .resource(fill(PrivateDomainResource.builder(), "privateDomain-").build())
-                    .build();
-            when(this.organizations.listPrivateDomains(request2)).thenReturn(Mono.just(response2));
-
-            org.cloudfoundry.client.v2.routes.ListRoutesRequest request3 = fillPage(org.cloudfoundry.client.v2.routes.ListRoutesRequest.builder())
-                    .domainId("test-privateDomain-id")
-                    .host(null)
-                    .organizationId(null)
-                    .build();
-            ListRoutesResponse response3 = fillPage(ListRoutesResponse.builder())
-                    .resource(fill(RouteResource.builder(), "route-").build())
-                    .build();
-            when(this.routes.list(request3)).thenReturn(Mono.just(response3));
-
-            RemoveRouteApplicationRequest request4 = fill(RemoveRouteApplicationRequest.builder())
-                    .applicationId("test-application-id")
-                    .routeId("test-route-id")
-                    .build();
-            when(this.routes.removeApplication(request4)).thenReturn(Mono.<Void>empty());
-        }
-
-        @Override
-        protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
-            // Expects onComplete() with no onNext()
-        }
-
-        @Override
-        protected Publisher<Void> invoke() {
-            UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .host(null)
-                    .build();
+                .build();
 
             return this.operationRoutes.unmap(request);
         }
@@ -1127,46 +1127,46 @@ public final class DefaultRoutesTest {
         @Before
         public void setUp() throws Exception {
             ListSpaceApplicationsRequest request1 = fillPage(ListSpaceApplicationsRequest.builder())
-                    .diego(null)
-                    .name("test-applicationName")
-                    .spaceId("test-space-id")
-                    .build();
+                .diego(null)
+                .name("test-applicationName")
+                .spaceId("test-space-id")
+                .build();
             ListSpaceApplicationsResponse response1 = fillPage(ListSpaceApplicationsResponse.builder())
-                    .resource(fill(ApplicationResource.builder(), "application-")
-                            .build())
-                    .build();
+                .resource(fill(ApplicationResource.builder(), "application-")
+                    .build())
+                .build();
             when(this.spaces.listApplications(request1)).thenReturn(Mono.just(response1));
 
             ListOrganizationPrivateDomainsRequest request2 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .name("test-domain")
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .name("test-domain")
+                .build();
             ListOrganizationPrivateDomainsResponse response2 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
-                    .build();
+                .build();
             when(this.organizations.listPrivateDomains(request2)).thenReturn(Mono.just(response2));
 
             ListSharedDomainsRequest request3 = fillPage(ListSharedDomainsRequest.builder())
-                    .name("test-domain")
-                    .build();
+                .name("test-domain")
+                .build();
             ListSharedDomainsResponse response3 = fillPage(ListSharedDomainsResponse.builder(), "sharedDomains-")
-                    .resource(fill(SharedDomainResource.builder(), "sharedDomain-").build())
-                    .build();
+                .resource(fill(SharedDomainResource.builder(), "sharedDomain-").build())
+                .build();
             when(this.sharedDomains.list(request3)).thenReturn(Mono.just(response3));
-            
+
             org.cloudfoundry.client.v2.routes.ListRoutesRequest request4 = fillPage(org.cloudfoundry.client.v2.routes.ListRoutesRequest.builder())
-                    .domainId("test-sharedDomain-id")
-                    .host("test-host")
-                    .organizationId(null)
-                    .build();
+                .domainId("test-sharedDomain-id")
+                .host("test-host")
+                .organizationId(null)
+                .build();
             ListRoutesResponse response4 = fillPage(ListRoutesResponse.builder())
-                    .resource(fill(RouteResource.builder(), "route-").build())
-                    .build();
+                .resource(fill(RouteResource.builder(), "route-").build())
+                .build();
             when(this.routes.list(request4)).thenReturn(Mono.just(response4));
 
             RemoveRouteApplicationRequest request5 = fill(RemoveRouteApplicationRequest.builder())
-                    .applicationId("test-application-id")
-                    .routeId("test-route-id")
-                    .build();
+                .applicationId("test-application-id")
+                .routeId("test-route-id")
+                .build();
             when(this.routes.removeApplication(request5)).thenReturn(Mono.<Void>empty());
         }
 
@@ -1178,7 +1178,7 @@ public final class DefaultRoutesTest {
         @Override
         protected Publisher<Void> invoke() {
             UnmapRouteRequest request = fill(UnmapRouteRequest.builder())
-                    .build();
+                .build();
 
             return this.operationRoutes.unmap(request);
         }

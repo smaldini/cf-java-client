@@ -40,35 +40,35 @@ public final class SpringServiceKeysTest {
         @Override
         protected RequestContext getRequestContext() {
             return new RequestContext()
-                    .method(POST).path("v2/service_keys")
-                    .requestPayload("v2/service_keys/POST_request.json")
-                    .status(CREATED)
-                    .responsePayload("v2/service_keys/POST_response.json");
+                .method(POST).path("v2/service_keys")
+                .requestPayload("v2/service_keys/POST_request.json")
+                .status(CREATED)
+                .responsePayload("v2/service_keys/POST_response.json");
         }
 
         @Override
         protected CreateServiceKeyResponse getResponse() {
             return CreateServiceKeyResponse.builder()
-                    .metadata(Metadata.builder()
-                            .createdAt("2015-07-27T22:43:22Z")
-                            .id("79aa4b11-99f3-484b-adfc-a63fa818c4d1")
-                            .url("/v2/service_keys/79aa4b11-99f3-484b-adfc-a63fa818c4d1")
-                            .build())
-                    .entity(ServiceKeyEntity.builder()
-                            .credential("creds-key-392", "creds-val-392")
-                            .name("name-960")
-                            .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
-                            .serviceInstanceUrl("/v2/service_instances/132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
-                            .build())
-                    .build();
+                .metadata(Metadata.builder()
+                    .createdAt("2015-07-27T22:43:22Z")
+                    .id("79aa4b11-99f3-484b-adfc-a63fa818c4d1")
+                    .url("/v2/service_keys/79aa4b11-99f3-484b-adfc-a63fa818c4d1")
+                    .build())
+                .entity(ServiceKeyEntity.builder()
+                    .credential("creds-key-392", "creds-val-392")
+                    .name("name-960")
+                    .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
+                    .serviceInstanceUrl("/v2/service_instances/132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
+                    .build())
+                .build();
         }
 
         @Override
         protected CreateServiceKeyRequest getValidRequest() throws Exception {
             return CreateServiceKeyRequest.builder()
-                    .name("name-960")
-                    .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
-                    .build();
+                .name("name-960")
+                .serviceInstanceId("132944c8-c31d-4bb8-9155-ae4e2ebe1a0c")
+                .build();
         }
 
         @Override

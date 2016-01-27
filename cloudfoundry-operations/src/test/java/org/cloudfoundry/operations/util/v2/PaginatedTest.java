@@ -36,23 +36,23 @@ public final class PaginatedTest {
         List<SpaceResource> expected = Arrays.asList(testSpaceResource(1), testSpaceResource(2), testSpaceResource(3));
 
         List<SpaceResource> actual = Paginated
-                .requestPages(new Function<Integer, Mono<ListSpacesResponse>>() {
+            .requestPages(new Function<Integer, Mono<ListSpacesResponse>>() {
 
-                    @Override
-                    public Mono<ListSpacesResponse> apply(Integer i) {
-                        return testPaginatedResponsePublisher(i, 3);
-                    }
+                @Override
+                public Mono<ListSpacesResponse> apply(Integer i) {
+                    return testPaginatedResponsePublisher(i, 3);
+                }
 
-                })
-                .flatMap(new Function<ListSpacesResponse, Stream<? extends SpaceResource>>() {
+            })
+            .flatMap(new Function<ListSpacesResponse, Stream<? extends SpaceResource>>() {
 
-                    @Override
-                    public Stream<SpaceResource> apply(ListSpacesResponse response) {
-                        return Stream.fromIterable(response.getResources());
-                    }
+                @Override
+                public Stream<SpaceResource> apply(ListSpacesResponse response) {
+                    return Stream.fromIterable(response.getResources());
+                }
 
-                })
-                .toList().get();
+            })
+            .toList().get();
 
         assertEquals(expected, actual);
     }
@@ -60,18 +60,18 @@ public final class PaginatedTest {
     @Test(expected = IllegalStateException.class)
     public void pageStreamNoTotalPages() {
         Paginated
-                .requestPages(new Function<Integer, Mono<ListSpacesResponse>>() {
+            .requestPages(new Function<Integer, Mono<ListSpacesResponse>>() {
 
-                    @Override
-                    public Mono<ListSpacesResponse> apply(Integer page) {
-                        ListSpacesResponse response = ListSpacesResponse.builder()
-                                .resource(testSpaceResource(0))
-                                .build();
+                @Override
+                public Mono<ListSpacesResponse> apply(Integer page) {
+                    ListSpacesResponse response = ListSpacesResponse.builder()
+                        .resource(testSpaceResource(0))
+                        .build();
 
-                        return Mono.just(response);
-                    }
+                    return Mono.just(response);
+                }
 
-                }).toList().get();
+            }).toList().get();
     }
 
     @Test
@@ -79,36 +79,36 @@ public final class PaginatedTest {
         List<SpaceResource> expected = Arrays.asList(testSpaceResource(0), testSpaceResource(1), testSpaceResource(2));
 
         List<SpaceResource> actual = Paginated
-                .requestResources(new Function<Integer, Mono<ListSpacesResponse>>() {
+            .requestResources(new Function<Integer, Mono<ListSpacesResponse>>() {
 
-                    @Override
-                    public Mono<ListSpacesResponse> apply(Integer i) {
-                        return testPaginatedResponsePublisher(i - 1, 3);
-                    }
+                @Override
+                public Mono<ListSpacesResponse> apply(Integer i) {
+                    return testPaginatedResponsePublisher(i - 1, 3);
+                }
 
-                }).toList().get();
+            }).toList().get();
 
         assertEquals(expected, actual);
     }
 
     private static Mono<ListSpacesResponse> testPaginatedResponsePublisher(int i, int totalNumber) {
         ListSpacesResponse response = ListSpacesResponse.builder()
-                .totalPages(totalNumber)
-                .resource(testSpaceResource(i))
-                .build();
+            .totalPages(totalNumber)
+            .resource(testSpaceResource(i))
+            .build();
 
         return Mono.just(response);
     }
 
     private static SpaceResource testSpaceResource(int i) {
         return SpaceResource.builder()
-                .metadata(SpaceResource.Metadata.builder()
-                        .id("test-id-" + i)
-                        .build())
-                .entity(SpaceEntity.builder()
-                        .name("name-" + i)
-                        .build())
-                .build();
+            .metadata(SpaceResource.Metadata.builder()
+                .id("test-id-" + i)
+                .build())
+            .entity(SpaceEntity.builder()
+                .name("name-" + i)
+                .build())
+            .build();
     }
 
 }

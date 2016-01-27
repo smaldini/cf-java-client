@@ -57,13 +57,13 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 public abstract class AbstractRestTest {
 
     protected static final ProcessorGroup<?> PROCESSOR_GROUP = Processors.ioGroup("cloudfoundry-client-spring", PlatformDependent.MEDIUM_BUFFER_SIZE, Processors.DEFAULT_POOL_SIZE,
-            uncaughtExceptionHandler(), null, false);
+        uncaughtExceptionHandler(), null, false);
 
     protected final OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(new ClientCredentialsResourceDetails(), new DefaultOAuth2ClientContext(new DefaultOAuth2AccessToken("test-access-token")));
 
     protected final URI root = UriComponentsBuilder.newInstance()
-            .scheme("https").host("api.run.pivotal.io")
-            .build().toUri();
+        .scheme("https").host("api.run.pivotal.io")
+        .build().toUri();
 
     private final MockRestServiceServer mockServer = MockRestServiceServer.createServer(this.restTemplate);
 
@@ -72,8 +72,8 @@ public abstract class AbstractRestTest {
         for (HttpMessageConverter<?> messageConverter : messageConverters) {
             if (messageConverter instanceof MappingJackson2HttpMessageConverter) {
                 ((MappingJackson2HttpMessageConverter) messageConverter).getObjectMapper()
-                        .setSerializationInclusion(NON_NULL)
-                        .addHandler(new FailingDeserializationProblemHandler());
+                    .setSerializationInclusion(NON_NULL)
+                    .addHandler(new FailingDeserializationProblemHandler());
             }
         }
 
@@ -89,8 +89,8 @@ public abstract class AbstractRestTest {
         String uri = UriComponentsBuilder.fromUri(this.root).path(requestContext.getPath()).build().toString();
 
         ResponseActions responseActions = this.mockServer
-                .expect(method(method))
-                .andExpect(requestTo(uri));
+            .expect(method(method))
+            .andExpect(requestTo(uri));
 
         if (!requestContext.isAnyRequestPayload()) {
             RequestMatcher payloadMatcher;

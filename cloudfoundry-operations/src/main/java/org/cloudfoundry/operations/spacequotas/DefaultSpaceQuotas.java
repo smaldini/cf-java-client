@@ -49,22 +49,22 @@ public final class DefaultSpaceQuotas implements SpaceQuotas {
     @Override
     public Mono<SpaceQuota> get(final GetSpaceQuotaRequest getSpaceQuotaRequest) {
         return Stream
-                .from(Validators
-                        .validate(getSpaceQuotaRequest)
-                        .and(this.organizationId)
-                        .flatMap(requestSpaceQuotaDefinitionsWithContext(this.cloudFoundryClient)))
-                .filter(equalRequestAndDefinitionName())
-                .single()
-                .map(extractQuotaDefinition())
-                .map(toSpaceQuota())
-                .otherwise(Exceptions.<SpaceQuota>convert("Space Quota %s does not exist", getSpaceQuotaRequest.getName()));
+            .from(Validators
+                .validate(getSpaceQuotaRequest)
+                .and(this.organizationId)
+                .flatMap(requestSpaceQuotaDefinitionsWithContext(this.cloudFoundryClient)))
+            .filter(equalRequestAndDefinitionName())
+            .single()
+            .map(extractQuotaDefinition())
+            .map(toSpaceQuota())
+            .otherwise(Exceptions.<SpaceQuota>convert("Space Quota %s does not exist", getSpaceQuotaRequest.getName()));
     }
 
     @Override
     public Publisher<SpaceQuota> list() {
         return this.organizationId
-                .flatMap(requestSpaceQuotaDefinitions(this.cloudFoundryClient))
-                .map(toSpaceQuota());
+            .flatMap(requestSpaceQuotaDefinitions(this.cloudFoundryClient))
+            .map(toSpaceQuota());
     }
 
     private static Predicate<Tuple2<SpaceQuotaDefinitionResource, GetSpaceQuotaRequest>> equalRequestAndDefinitionName() {
@@ -91,19 +91,19 @@ public final class DefaultSpaceQuotas implements SpaceQuotas {
 
     private static Stream<SpaceQuotaDefinitionResource> fromSpaceQuotaDefinitionResourceStream(final CloudFoundryClient cloudFoundryClient, final String organizationId) {
         return Paginated
-                .requestResources(new Function<Integer, Mono<ListOrganizationSpaceQuotaDefinitionsResponse>>() {
+            .requestResources(new Function<Integer, Mono<ListOrganizationSpaceQuotaDefinitionsResponse>>() {
 
-                    @Override
-                    public Mono<ListOrganizationSpaceQuotaDefinitionsResponse> apply(Integer page) {
-                        ListOrganizationSpaceQuotaDefinitionsRequest request = ListOrganizationSpaceQuotaDefinitionsRequest.builder()
-                                .organizationId(organizationId)
-                                .page(page)
-                                .build();
+                @Override
+                public Mono<ListOrganizationSpaceQuotaDefinitionsResponse> apply(Integer page) {
+                    ListOrganizationSpaceQuotaDefinitionsRequest request = ListOrganizationSpaceQuotaDefinitionsRequest.builder()
+                        .organizationId(organizationId)
+                        .page(page)
+                        .build();
 
-                        return cloudFoundryClient.organizations().listSpaceQuotaDefinitions(request);
-                    }
+                    return cloudFoundryClient.organizations().listSpaceQuotaDefinitions(request);
+                }
 
-                });
+            });
     }
 
     private static Function<String, Stream<SpaceQuotaDefinitionResource>> requestSpaceQuotaDefinitions(final CloudFoundryClient cloudFoundryClient) {
@@ -118,14 +118,14 @@ public final class DefaultSpaceQuotas implements SpaceQuotas {
     }
 
     private static Function<Tuple2<GetSpaceQuotaRequest, String>, Stream<Tuple2<SpaceQuotaDefinitionResource, GetSpaceQuotaRequest>>> requestSpaceQuotaDefinitionsWithContext(
-            final CloudFoundryClient cloudFoundryClient) {
+        final CloudFoundryClient cloudFoundryClient) {
 
         return Tuples.function(new Function2<GetSpaceQuotaRequest, String, Stream<Tuple2<SpaceQuotaDefinitionResource, GetSpaceQuotaRequest>>>() {
 
             @Override
             public Stream<Tuple2<SpaceQuotaDefinitionResource, GetSpaceQuotaRequest>> apply(GetSpaceQuotaRequest request, String organizationId) {
                 return fromSpaceQuotaDefinitionResourceStream(cloudFoundryClient, organizationId)
-                        .zipWith(Mono.just(request));
+                    .zipWith(Mono.just(request));
             }
 
         });
@@ -139,15 +139,15 @@ public final class DefaultSpaceQuotas implements SpaceQuotas {
                 SpaceQuotaDefinitionEntity entity = Resources.getEntity(resource);
 
                 return SpaceQuota.builder()
-                        .id(Resources.getId(resource))
-                        .instanceMemoryLimit(entity.getInstanceMemoryLimit())
-                        .name(entity.getName())
-                        .organizationId(entity.getOrganizationId())
-                        .paidServicePlans(entity.getNonBasicServicesAllowed())
-                        .totalMemoryLimit(entity.getMemoryLimit())
-                        .totalRoutes(entity.getTotalRoutes())
-                        .totalServiceInstances(entity.getTotalServices())
-                        .build();
+                    .id(Resources.getId(resource))
+                    .instanceMemoryLimit(entity.getInstanceMemoryLimit())
+                    .name(entity.getName())
+                    .organizationId(entity.getOrganizationId())
+                    .paidServicePlans(entity.getNonBasicServicesAllowed())
+                    .totalMemoryLimit(entity.getMemoryLimit())
+                    .totalRoutes(entity.getTotalRoutes())
+                    .totalServiceInstances(entity.getTotalServices())
+                    .build();
             }
 
         };

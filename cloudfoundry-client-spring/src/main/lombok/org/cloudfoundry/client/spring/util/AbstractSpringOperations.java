@@ -79,40 +79,40 @@ public abstract class AbstractSpringOperations {
             }
 
         })
-                .next();
+            .next();
     }
 
     protected final <T, V extends Validatable> Stream<T> exchange(V request, final Function<ReactiveSession<T>, T> exchange) {
         return Stream
-                .from(Validators
-                        .validate(request)
-                        .flatMap(new Function<V, Stream<T>>() {
+            .from(Validators
+                .validate(request)
+                .flatMap(new Function<V, Stream<T>>() {
 
-                            @Override
-                            public Stream<T> apply(V request) {
-                                return Stream
-                                        .yield(new Consumer<ReactiveSession<T>>() {
+                    @Override
+                    public Stream<T> apply(V request) {
+                        return Stream
+                            .yield(new Consumer<ReactiveSession<T>>() {
 
-                                            @Override
-                                            public void accept(ReactiveSession<T> session) {
-                                                try {
-                                                    T result = exchange.apply(session);
-                                                    if (result != null) {
-                                                        session.onNext(result);
-                                                    }
+                                @Override
+                                public void accept(ReactiveSession<T> session) {
+                                    try {
+                                        T result = exchange.apply(session);
+                                        if (result != null) {
+                                            session.onNext(result);
+                                        }
 
-                                                    session.onComplete();
-                                                } catch (HttpStatusCodeException e) {
-                                                    session.onError(CloudFoundryExceptionBuilder.build(e));
-                                                }
-                                            }
+                                        session.onComplete();
+                                    } catch (HttpStatusCodeException e) {
+                                        session.onError(CloudFoundryExceptionBuilder.build(e));
+                                    }
+                                }
 
-                                        });
-                            }
+                            });
+                    }
 
-                        }))
-                .publishOn(this.processorGroup)
-                .onBackpressureBlock();
+                }))
+            .publishOn(this.processorGroup)
+            .onBackpressureBlock();
     }
 
     protected final <T> Mono<T> get(Validatable request, final Class<T> responseType, final Consumer<UriComponentsBuilder> builderCallback) {
@@ -129,7 +129,7 @@ public abstract class AbstractSpringOperations {
             }
 
         })
-                .next();
+            .next();
     }
 
     protected final Stream<byte[]> getStream(final Validatable request, final Consumer<UriComponentsBuilder> builderCallback) {
@@ -179,7 +179,7 @@ public abstract class AbstractSpringOperations {
             }
 
         })
-                .next();
+            .next();
     }
 
     protected final <T> Mono<T> post(final Validatable request, Class<T> responseType, Consumer<UriComponentsBuilder> builderCallback) {
@@ -207,7 +207,7 @@ public abstract class AbstractSpringOperations {
             }
 
         })
-                .next();
+            .next();
     }
 
     protected final <T> Mono<T> put(final Validatable request, Class<T> responseType, Consumer<UriComponentsBuilder> builderCallback) {
@@ -235,7 +235,7 @@ public abstract class AbstractSpringOperations {
             }
 
         })
-                .next();
+            .next();
     }
 
 }

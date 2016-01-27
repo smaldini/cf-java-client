@@ -43,117 +43,117 @@ final class CloudFoundryCleaner {
     }
 
     static Stream<Void> clean(CloudFoundryClient cloudFoundryClient,
-                            Predicate<ApplicationResource> applicationPredicate,
-                            Predicate<DomainResource> domainPredicate,
-                            Predicate<OrganizationResource> organizationPredicate,
-                            Predicate<RouteResource> routePredicate,
-                            Predicate<SpaceResource> spacePredicate) {
+                              Predicate<ApplicationResource> applicationPredicate,
+                              Predicate<DomainResource> domainPredicate,
+                              Predicate<OrganizationResource> organizationPredicate,
+                              Predicate<RouteResource> routePredicate,
+                              Predicate<SpaceResource> spacePredicate) {
 
         return cleanApplications(cloudFoundryClient, applicationPredicate)
-                .after(() -> cleanRoutes(cloudFoundryClient, routePredicate))
-                .after(() -> cleanDomains(cloudFoundryClient, domainPredicate))
-                .after(() -> cleanSpaces(cloudFoundryClient, spacePredicate))
-                .after(() -> cleanOrganizations(cloudFoundryClient, organizationPredicate));
+            .after(() -> cleanRoutes(cloudFoundryClient, routePredicate))
+            .after(() -> cleanDomains(cloudFoundryClient, domainPredicate))
+            .after(() -> cleanSpaces(cloudFoundryClient, spacePredicate))
+            .after(() -> cleanOrganizations(cloudFoundryClient, organizationPredicate));
     }
 
     private static Stream<Void> cleanApplications(CloudFoundryClient cloudFoundryClient, Predicate<ApplicationResource> predicate) {
         return Paginated
-                .requestResources(page -> {
-                    ListApplicationsRequest request = ListApplicationsRequest.builder()
-                            .page(page)
-                            .build();
+            .requestResources(page -> {
+                ListApplicationsRequest request = ListApplicationsRequest.builder()
+                    .page(page)
+                    .build();
 
-                    return cloudFoundryClient.applicationsV2().list(request);
-                })
-                .filter(predicate)
-                .map(Resources::getId)
-                .flatMap(applicationId -> {
-                    DeleteApplicationRequest request = DeleteApplicationRequest.builder()
-                            .applicationId(applicationId)
-                            .build();
+                return cloudFoundryClient.applicationsV2().list(request);
+            })
+            .filter(predicate)
+            .map(Resources::getId)
+            .flatMap(applicationId -> {
+                DeleteApplicationRequest request = DeleteApplicationRequest.builder()
+                    .applicationId(applicationId)
+                    .build();
 
-                    return cloudFoundryClient.applicationsV2().delete(request);
-                });
+                return cloudFoundryClient.applicationsV2().delete(request);
+            });
     }
 
     private static Stream<Void> cleanDomains(CloudFoundryClient cloudFoundryClient, Predicate<DomainResource> predicate) {
         return Paginated
-                .requestResources(page -> {
-                    ListDomainsRequest request = ListDomainsRequest.builder()
-                            .page(page)
-                            .build();
+            .requestResources(page -> {
+                ListDomainsRequest request = ListDomainsRequest.builder()
+                    .page(page)
+                    .build();
 
-                    return cloudFoundryClient.domains().list(request);
-                })
-                .filter(predicate)
-                .map(Resources::getId)
-                .flatMap(domainId -> {
-                    DeleteDomainRequest request = DeleteDomainRequest.builder()
-                            .domainId(domainId)
-                            .build();
+                return cloudFoundryClient.domains().list(request);
+            })
+            .filter(predicate)
+            .map(Resources::getId)
+            .flatMap(domainId -> {
+                DeleteDomainRequest request = DeleteDomainRequest.builder()
+                    .domainId(domainId)
+                    .build();
 
-                    return cloudFoundryClient.domains().delete(request);
-                });
+                return cloudFoundryClient.domains().delete(request);
+            });
     }
 
     private static Stream<Void> cleanOrganizations(CloudFoundryClient cloudFoundryClient, Predicate<OrganizationResource> predicate) {
         return Paginated
-                .requestResources(page -> {
-                    ListOrganizationsRequest request = ListOrganizationsRequest.builder()
-                            .page(page)
-                            .build();
+            .requestResources(page -> {
+                ListOrganizationsRequest request = ListOrganizationsRequest.builder()
+                    .page(page)
+                    .build();
 
-                    return cloudFoundryClient.organizations().list(request);
-                })
-                .filter(predicate)
-                .map(Resources::getId)
-                .flatMap(organizationId -> {
-                    DeleteOrganizationRequest request = DeleteOrganizationRequest.builder()
-                            .organizationId(organizationId)
-                            .build();
+                return cloudFoundryClient.organizations().list(request);
+            })
+            .filter(predicate)
+            .map(Resources::getId)
+            .flatMap(organizationId -> {
+                DeleteOrganizationRequest request = DeleteOrganizationRequest.builder()
+                    .organizationId(organizationId)
+                    .build();
 
-                    return cloudFoundryClient.organizations().delete(request);
-                });
+                return cloudFoundryClient.organizations().delete(request);
+            });
     }
 
     private static Stream<Void> cleanRoutes(CloudFoundryClient cloudFoundryClient, Predicate<RouteResource> predicate) {
         return Paginated
-                .requestResources(page -> {
-                    ListRoutesRequest request = ListRoutesRequest.builder()
-                            .page(page)
-                            .build();
+            .requestResources(page -> {
+                ListRoutesRequest request = ListRoutesRequest.builder()
+                    .page(page)
+                    .build();
 
-                    return cloudFoundryClient.routes().list(request);
-                })
-                .filter(predicate)
-                .map(Resources::getId)
-                .flatMap(routeId -> {
-                    DeleteRouteRequest request = DeleteRouteRequest.builder()
-                            .routeId(routeId)
-                            .build();
+                return cloudFoundryClient.routes().list(request);
+            })
+            .filter(predicate)
+            .map(Resources::getId)
+            .flatMap(routeId -> {
+                DeleteRouteRequest request = DeleteRouteRequest.builder()
+                    .routeId(routeId)
+                    .build();
 
-                    return cloudFoundryClient.routes().delete(request);
-                });
+                return cloudFoundryClient.routes().delete(request);
+            });
     }
 
     private static Stream<Void> cleanSpaces(CloudFoundryClient cloudFoundryClient, Predicate<SpaceResource> predicate) {
         return Paginated
-                .requestResources(page -> {
-                    ListSpacesRequest request = ListSpacesRequest.builder()
-                            .page(page)
-                            .build();
+            .requestResources(page -> {
+                ListSpacesRequest request = ListSpacesRequest.builder()
+                    .page(page)
+                    .build();
 
-                    return cloudFoundryClient.spaces().list(request);
-                })
-                .filter(predicate)
-                .map(Resources::getId)
-                .flatMap(spaceId -> {
-                    DeleteSpaceRequest request = DeleteSpaceRequest.builder()
-                            .spaceId(spaceId)
-                            .build();
+                return cloudFoundryClient.spaces().list(request);
+            })
+            .filter(predicate)
+            .map(Resources::getId)
+            .flatMap(spaceId -> {
+                DeleteSpaceRequest request = DeleteSpaceRequest.builder()
+                    .spaceId(spaceId)
+                    .build();
 
-                    return cloudFoundryClient.spaces().delete(request);
-                });
+                return cloudFoundryClient.spaces().delete(request);
+            });
     }
 
 }

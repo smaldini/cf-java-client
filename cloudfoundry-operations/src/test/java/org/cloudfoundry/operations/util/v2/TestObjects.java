@@ -233,7 +233,7 @@ public abstract class TestObjects {
 
     private static boolean isPaginatedType(Class<?> builtType) {
         return PaginatedRequest.class.isAssignableFrom(builtType) ||
-                PaginatedResponse.class.isAssignableFrom(builtType);
+            PaginatedResponse.class.isAssignableFrom(builtType);
     }
 
 }

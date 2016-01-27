@@ -33,7 +33,7 @@ public abstract class AbstractOperationsApiTest<T> extends AbstractOperationsTes
     @Test
     public final void test() throws Exception {
         TestSubscriber<T> testSubscriber = new TestSubscriber<T>()
-                .setScanningLoggerName(getScanningLoggerName());
+            .setScanningLoggerName(getScanningLoggerName());
 
         assertions(testSubscriber);
 

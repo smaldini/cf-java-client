@@ -113,7 +113,7 @@ public final class SpringOrganizations extends AbstractSpringOperations implemen
             @Override
             public void accept(UriComponentsBuilder builder) {
                 builder.pathSegment("v2", "organizations", request.getOrganizationId(), "auditors",
-                        request.getAuditorId());
+                    request.getAuditorId());
             }
 
         });
@@ -138,7 +138,7 @@ public final class SpringOrganizations extends AbstractSpringOperations implemen
             @Override
             public void accept(UriComponentsBuilder builder) {
                 builder.pathSegment("v2", "organizations", request.getOrganizationId(), "billing_managers",
-                        request.getBillingManagerId());
+                    request.getBillingManagerId());
             }
 
         });
@@ -187,7 +187,7 @@ public final class SpringOrganizations extends AbstractSpringOperations implemen
             @Override
             public void accept(UriComponentsBuilder builder) {
                 builder.pathSegment("v2", "organizations", request.getOrganizationId(), "private_domains", request
-                        .getPrivateDomainId());
+                    .getPrivateDomainId());
             }
 
         });
@@ -446,7 +446,7 @@ public final class SpringOrganizations extends AbstractSpringOperations implemen
             @Override
             public void accept(UriComponentsBuilder builder) {
                 builder.pathSegment("v2", "organizations", request.getOrganizationId(), "billing_managers", request
-                        .getBillingManagerId());
+                    .getBillingManagerId());
             }
 
         });
@@ -495,7 +495,7 @@ public final class SpringOrganizations extends AbstractSpringOperations implemen
             @Override
             public void accept(UriComponentsBuilder builder) {
                 builder.pathSegment("v2", "organizations", request.getOrganizationId(), "private_domains",
-                        request.getPrivateDomainId());
+                    request.getPrivateDomainId());
             }
 
         });

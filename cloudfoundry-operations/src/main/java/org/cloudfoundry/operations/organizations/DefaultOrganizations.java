@@ -37,8 +37,8 @@ public final class DefaultOrganizations implements Organizations {
     @Override
     public Publisher<Organization> list() {
         return Paginated
-                .requestResources(requestPage(this.cloudFoundryClient))
-                .map(toOrganization());
+            .requestResources(requestPage(this.cloudFoundryClient))
+            .map(toOrganization());
     }
 
     private static Function<Integer, Mono<ListOrganizationsResponse>> requestPage(final CloudFoundryClient cloudFoundryClient) {
@@ -47,8 +47,8 @@ public final class DefaultOrganizations implements Organizations {
             @Override
             public Mono<ListOrganizationsResponse> apply(Integer page) {
                 ListOrganizationsRequest request = ListOrganizationsRequest.builder()
-                        .page(page)
-                        .build();
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.organizations().list(request);
             }
@@ -62,9 +62,9 @@ public final class DefaultOrganizations implements Organizations {
             @Override
             public Organization apply(OrganizationResource resource) {
                 return Organization.builder()
-                        .id(Resources.getId(resource))
-                        .name(Resources.getEntity(resource).getName())
-                        .build();
+                    .id(Resources.getId(resource))
+                    .name(Resources.getEntity(resource).getName())
+                    .build();
             }
 
         };

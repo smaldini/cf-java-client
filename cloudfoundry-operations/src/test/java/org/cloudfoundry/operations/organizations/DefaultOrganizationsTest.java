@@ -38,29 +38,29 @@ public final class DefaultOrganizationsTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationsRequest request1 = fillPage(ListOrganizationsRequest.builder())
-                    .page(1)
-                    .build();
+                .page(1)
+                .build();
             ListOrganizationsResponse page1 = ListOrganizationsResponse.builder()
-                    .totalPages(2)
-                    .resource(fill(OrganizationResource.builder(), "org1-").build())
-                    .build();
+                .totalPages(2)
+                .resource(fill(OrganizationResource.builder(), "org1-").build())
+                .build();
             when(this.cloudFoundryClient.organizations().list(request1)).thenReturn(Mono.just(page1));
 
             ListOrganizationsRequest request2 = fillPage(ListOrganizationsRequest.builder())
-                    .page(2)
-                    .build();
+                .page(2)
+                .build();
             ListOrganizationsResponse page2 = ListOrganizationsResponse.builder()
-                    .totalPages(2)
-                    .resource(fill(OrganizationResource.builder(), "org2-").build())
-                    .build();
+                .totalPages(2)
+                .resource(fill(OrganizationResource.builder(), "org2-").build())
+                .build();
             when(this.cloudFoundryClient.organizations().list(request2)).thenReturn(Mono.just(page2));
         }
 
         @Override
         protected void assertions(TestSubscriber<Organization> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(fill(Organization.builder(), "org1-").build())
-                    .assertEquals(fill(Organization.builder(), "org2-").build());
+                .assertEquals(fill(Organization.builder(), "org1-").build())
+                .assertEquals(fill(Organization.builder(), "org2-").build());
         }
 
         @Override

@@ -24,8 +24,8 @@ public final class SpacesTest extends AbstractIntegrationTest {
     @Test
     public void list() {
         this.cloudFoundryOperations.spaces().list()
-                .subscribe(testSubscriber()
-                        .assertCount(1));
+            .subscribe(testSubscriber()
+                .assertCount(1));
     }
 
 }

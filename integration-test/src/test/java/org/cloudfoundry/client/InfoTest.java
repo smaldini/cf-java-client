@@ -30,16 +30,16 @@ public final class InfoTest extends AbstractIntegrationTest {
     @Test
     public void info() {
         GetInfoRequest request = GetInfoRequest.builder()
-                .build();
+            .build();
 
         this.cloudFoundryClient.info().get(request)
-                .subscribe(this.<GetInfoResponse>testSubscriber()
-                        .assertThat(response -> {
-                            Version expected = Version.valueOf(SUPPORTED_API_VERSION);
-                            Version actual = Version.valueOf(response.getApiVersion());
+            .subscribe(this.<GetInfoResponse>testSubscriber()
+                .assertThat(response -> {
+                    Version expected = Version.valueOf(SUPPORTED_API_VERSION);
+                    Version actual = Version.valueOf(response.getApiVersion());
 
-                            assertTrue(expected.greaterThanOrEqualTo(actual));
-                        }));
+                    assertTrue(expected.greaterThanOrEqualTo(actual));
+                }));
     }
 
 }

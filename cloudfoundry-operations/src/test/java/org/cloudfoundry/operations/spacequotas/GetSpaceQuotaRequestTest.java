@@ -28,9 +28,9 @@ public final class GetSpaceQuotaRequestTest {
     @Test
     public void isValid() {
         ValidationResult result = GetSpaceQuotaRequest.builder()
-                .name("test-name")
-                .build()
-                .isValid();
+            .name("test-name")
+            .build()
+            .isValid();
 
         assertEquals(VALID, result.getStatus());
     }
@@ -38,8 +38,8 @@ public final class GetSpaceQuotaRequestTest {
     @Test
     public void isValidNoName() {
         ValidationResult result = GetSpaceQuotaRequest.builder()
-                .build()
-                .isValid();
+            .build()
+            .isValid();
 
         assertEquals(INVALID, result.getStatus());
         assertEquals("space quota name must be specified", result.getMessages().get(0));

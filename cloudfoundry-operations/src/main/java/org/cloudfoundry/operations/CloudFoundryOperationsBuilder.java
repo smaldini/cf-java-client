@@ -99,11 +99,11 @@ public final class CloudFoundryOperationsBuilder {
         }
 
         Mono<String> organizationId = Promise
-                .from(Paginated
-                        .requestResources(requestOrganizationPage(cloudFoundryClient, organization))
-                        .single()
-                        .map(Resources.extractId())
-                        .otherwise(Exceptions.<String>convert("Organization %s does not exist", organization)));
+            .from(Paginated
+                .requestResources(requestOrganizationPage(cloudFoundryClient, organization))
+                .single()
+                .map(Resources.extractId())
+                .otherwise(Exceptions.<String>convert("Organization %s does not exist", organization)));
 
         organizationId.get();
         return organizationId;
@@ -115,12 +115,12 @@ public final class CloudFoundryOperationsBuilder {
         }
 
         Mono<String> spaceId = Promise
-                .from(Stream
-                        .from(organizationId
-                                .flatMap(requestResources(cloudFoundryClient, space)))
-                        .single()                                                            // TODO: Flux.single() Flux.singleOrEmpty()
-                        .map(Resources.extractId())
-                        .otherwise(Exceptions.<String>convert("Space %s does not exist", space)));
+            .from(Stream
+                .from(organizationId
+                    .flatMap(requestResources(cloudFoundryClient, space)))
+                .single()                                                            // TODO: Flux.single() Flux.singleOrEmpty()
+                .map(Resources.extractId())
+                .otherwise(Exceptions.<String>convert("Space %s does not exist", space)));
 
         spaceId.get();
         return spaceId;
@@ -132,9 +132,9 @@ public final class CloudFoundryOperationsBuilder {
             @Override
             public Mono<ListOrganizationsResponse> apply(Integer page) {
                 ListOrganizationsRequest request = ListOrganizationsRequest.builder()
-                        .name(organization)
-                        .page(page)
-                        .build();
+                    .name(organization)
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.organizations().list(request);
             }
@@ -158,10 +158,10 @@ public final class CloudFoundryOperationsBuilder {
             @Override
             public Mono<ListSpacesResponse> apply(Integer page) {
                 ListSpacesRequest request = ListSpacesRequest.builder()
-                        .organizationId(organizationId)
-                        .name(space)
-                        .page(page)
-                        .build();
+                    .organizationId(organizationId)
+                    .name(space)
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().list(request);
             }

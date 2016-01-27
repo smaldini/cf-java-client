@@ -69,19 +69,19 @@ public final class DefaultApplications implements Applications {
     @Override
     public Mono<ApplicationDetail> get(GetApplicationRequest request) {
         return Validators
-                .validate(request)
-                .and(this.spaceId)
-                .then(requestApplicationResource(this.cloudFoundryClient))
-                .then(gatherApplicationInfo(this.cloudFoundryClient))
-                .map(toApplicationDetail());
+            .validate(request)
+            .and(this.spaceId)
+            .then(requestApplicationResource(this.cloudFoundryClient))
+            .then(gatherApplicationInfo(this.cloudFoundryClient))
+            .map(toApplicationDetail());
     }
 
     @Override
     public Publisher<ApplicationSummary> list() {
         return this.spaceId
-                .then(requestSpaceSummary(this.cloudFoundryClient))
-                .flatMap(extractApplications())
-                .map(toApplication());
+            .then(requestSpaceSummary(this.cloudFoundryClient))
+            .flatMap(extractApplications())
+            .map(toApplication());
     }
 
     private static Function<GetSpaceSummaryResponse, Stream<SpaceApplicationSummary>> extractApplications() {
@@ -105,7 +105,7 @@ public final class DefaultApplications implements Applications {
                 String stackId = Resources.getEntity(applicationResource).getStackId();
 
                 return Mono.when(requestApplicationStats(cloudFoundryClient, applicationId), requestApplicationSummary(cloudFoundryClient, applicationId), requestStack(cloudFoundryClient, stackId),
-                        requestApplicationInstances(cloudFoundryClient, applicationId));
+                    requestApplicationInstances(cloudFoundryClient, applicationId));
             }
 
         };
@@ -113,14 +113,14 @@ public final class DefaultApplications implements Applications {
 
     private static String getBuildpack(SummaryApplicationResponse response) {
         return Optional
-                .ofNullable(response.getBuildpack())
-                .orElse(response.getDetectedBuildpack());
+            .ofNullable(response.getBuildpack())
+            .orElse(response.getDetectedBuildpack());
     }
 
     private static Mono<ApplicationInstancesResponse> requestApplicationInstances(CloudFoundryClient cloudFoundryClient, String applicationId) {
         ApplicationInstancesRequest request = ApplicationInstancesRequest.builder()
-                .applicationId(applicationId)
-                .build();
+            .applicationId(applicationId)
+            .build();
 
         return cloudFoundryClient.applicationsV2().instances(request);
     }
@@ -131,8 +131,8 @@ public final class DefaultApplications implements Applications {
             @Override
             public Mono<ApplicationResource> apply(GetApplicationRequest getApplicationRequest, String spaceId) {
                 return Paginated
-                        .requestResources(requestListApplicationsPage(cloudFoundryClient, getApplicationRequest, spaceId))
-                        .single();
+                    .requestResources(requestListApplicationsPage(cloudFoundryClient, getApplicationRequest, spaceId))
+                    .single();
             }
 
         });
@@ -140,16 +140,16 @@ public final class DefaultApplications implements Applications {
 
     private static Mono<ApplicationStatisticsResponse> requestApplicationStats(CloudFoundryClient cloudFoundryClient, String applicationId) {
         ApplicationStatisticsRequest request = ApplicationStatisticsRequest.builder()
-                .applicationId(applicationId)
-                .build();
+            .applicationId(applicationId)
+            .build();
 
         return cloudFoundryClient.applicationsV2().statistics(request);
     }
 
     private static Mono<SummaryApplicationResponse> requestApplicationSummary(CloudFoundryClient cloudFoundryClient, String applicationId) {
         SummaryApplicationRequest request = SummaryApplicationRequest.builder()
-                .applicationId(applicationId)
-                .build();
+            .applicationId(applicationId)
+            .build();
 
         return cloudFoundryClient.applicationsV2().summary(request);
     }
@@ -161,10 +161,10 @@ public final class DefaultApplications implements Applications {
             @Override
             public Mono<ListSpaceApplicationsResponse> apply(Integer page) {
                 ListSpaceApplicationsRequest request = ListSpaceApplicationsRequest.builder()
-                        .name(getApplicationRequest.getName())
-                        .spaceId(spaceId)
-                        .page(page)
-                        .build();
+                    .name(getApplicationRequest.getName())
+                    .spaceId(spaceId)
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().listApplications(request);
             }
@@ -178,8 +178,8 @@ public final class DefaultApplications implements Applications {
             @Override
             public Mono<GetSpaceSummaryResponse> apply(String targetedSpace) {
                 GetSpaceSummaryRequest request = GetSpaceSummaryRequest.builder()
-                        .spaceId(targetedSpace)
-                        .build();
+                    .spaceId(targetedSpace)
+                    .build();
 
                 return cloudFoundryClient.spaces().getSummary(request);
             }
@@ -189,8 +189,8 @@ public final class DefaultApplications implements Applications {
 
     private static Mono<GetStackResponse> requestStack(CloudFoundryClient cloudFoundryClient, String stackId) {
         GetStackRequest request = GetStackRequest.builder()
-                .stackId(stackId)
-                .build();
+            .stackId(stackId)
+            .build();
 
         return cloudFoundryClient.stacks().get(request);
     }
@@ -201,15 +201,15 @@ public final class DefaultApplications implements Applications {
             @Override
             public ApplicationSummary apply(SpaceApplicationSummary spaceApplicationSummary) {
                 return ApplicationSummary.builder()
-                        .diskQuota(spaceApplicationSummary.getDiskQuota())
-                        .id(spaceApplicationSummary.getId())
-                        .instances(spaceApplicationSummary.getInstances())
-                        .memoryLimit(spaceApplicationSummary.getMemory())
-                        .name(spaceApplicationSummary.getName())
-                        .requestedState(spaceApplicationSummary.getState())
-                        .runningInstances(spaceApplicationSummary.getRunningInstances())
-                        .urls(spaceApplicationSummary.getUrls())
-                        .build();
+                    .diskQuota(spaceApplicationSummary.getDiskQuota())
+                    .id(spaceApplicationSummary.getId())
+                    .instances(spaceApplicationSummary.getInstances())
+                    .memoryLimit(spaceApplicationSummary.getMemory())
+                    .name(spaceApplicationSummary.getName())
+                    .requestedState(spaceApplicationSummary.getState())
+                    .runningInstances(spaceApplicationSummary.getRunningInstances())
+                    .urls(spaceApplicationSummary.getUrls())
+                    .build();
             }
 
         };
@@ -225,17 +225,17 @@ public final class DefaultApplications implements Applications {
                 List<String> urls = toUrls(summaryApplicationResponse.getRoutes());
 
                 return ApplicationDetail.builder()
-                        .id(summaryApplicationResponse.getId())
-                        .diskQuota(summaryApplicationResponse.getDiskQuota())
-                        .memoryLimit(summaryApplicationResponse.getMemory())
-                        .requestedState(summaryApplicationResponse.getState())
-                        .instances(summaryApplicationResponse.getInstances())
-                        .urls(urls)
-                        .lastUploaded(toDate(summaryApplicationResponse.getPackageUpdatedAt()))
-                        .stack(getStackResponse.getEntity().getName())
-                        .buildpack(getBuildpack(summaryApplicationResponse))
-                        .instanceDetails(toInstanceDetailList(applicationInstancesResponse, applicationStatisticsResponse))
-                        .build();
+                    .id(summaryApplicationResponse.getId())
+                    .diskQuota(summaryApplicationResponse.getDiskQuota())
+                    .memoryLimit(summaryApplicationResponse.getMemory())
+                    .requestedState(summaryApplicationResponse.getState())
+                    .instances(summaryApplicationResponse.getInstances())
+                    .urls(urls)
+                    .lastUploaded(toDate(summaryApplicationResponse.getPackageUpdatedAt()))
+                    .stack(getStackResponse.getEntity().getName())
+                    .buildpack(getBuildpack(summaryApplicationResponse))
+                    .instanceDetails(toInstanceDetailList(applicationInstancesResponse, applicationStatisticsResponse))
+                    .build();
             }
 
         });
@@ -266,14 +266,14 @@ public final class DefaultApplications implements Applications {
         ApplicationStatisticsResponse.InstanceStats.Statistics.Usage usage = stats.getUsage();
 
         return ApplicationDetail.InstanceDetail.builder()
-                .state(entry.getValue().getState())
-                .since(toDate(entry.getValue().getSince()))
-                .cpu(usage.getCpu())
-                .memoryUsage(usage.getMemory())
-                .diskUsage(usage.getDisk())
-                .diskQuota(stats.getDiskQuota())
-                .memoryQuota(stats.getMemoryQuota())
-                .build();
+            .state(entry.getValue().getState())
+            .since(toDate(entry.getValue().getSince()))
+            .cpu(usage.getCpu())
+            .memoryUsage(usage.getMemory())
+            .diskUsage(usage.getDisk())
+            .diskQuota(stats.getDiskQuota())
+            .memoryQuota(stats.getMemoryQuota())
+            .build();
     }
 
     private static List<ApplicationDetail.InstanceDetail> toInstanceDetailList(ApplicationInstancesResponse instancesResponse, ApplicationStatisticsResponse statisticsResponse) {

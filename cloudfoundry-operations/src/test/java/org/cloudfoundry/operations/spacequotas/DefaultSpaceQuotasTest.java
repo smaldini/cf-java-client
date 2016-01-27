@@ -39,20 +39,20 @@ public final class DefaultSpaceQuotasTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpaceQuotaDefinitionsRequest request = fillPage(ListOrganizationSpaceQuotaDefinitionsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .build();
             ListOrganizationSpaceQuotaDefinitionsResponse response = fillPage(ListOrganizationSpaceQuotaDefinitionsResponse.builder())
-                    .resource(fill(SpaceQuotaDefinitionResource.builder(), "spaceQuotaDefinition-").build())
-                    .build();
+                .resource(fill(SpaceQuotaDefinitionResource.builder(), "spaceQuotaDefinition-").build())
+                .build();
             when(this.cloudFoundryClient.organizations()
-                    .listSpaceQuotaDefinitions(request))
-                    .thenReturn(Mono.just(response));
+                .listSpaceQuotaDefinitions(request))
+                .thenReturn(Mono.just(response));
         }
 
         @Override
         protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(fill(SpaceQuota.builder(), "spaceQuotaDefinition-").build());
+                .assertEquals(fill(SpaceQuota.builder(), "spaceQuotaDefinition-").build());
         }
 
         @Override
@@ -69,7 +69,7 @@ public final class DefaultSpaceQuotasTest {
         @Override
         protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(RequestValidationException.class);
+                .assertError(RequestValidationException.class);
         }
 
         @Override
@@ -85,7 +85,7 @@ public final class DefaultSpaceQuotasTest {
         @Override
         protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override
@@ -103,16 +103,16 @@ public final class DefaultSpaceQuotasTest {
         @Before
         public void setUp() throws Exception {
             when(this.cloudFoundryClient.organizations()
-                    .listSpaceQuotaDefinitions(fillPage(ListOrganizationSpaceQuotaDefinitionsRequest.builder())
-                            .organizationId(TEST_ORGANIZATION_ID)
-                            .build()))
-                    .thenReturn(Mono.just(fillPage(ListOrganizationSpaceQuotaDefinitionsResponse.builder()).build()));
+                .listSpaceQuotaDefinitions(fillPage(ListOrganizationSpaceQuotaDefinitionsRequest.builder())
+                    .organizationId(TEST_ORGANIZATION_ID)
+                    .build()))
+                .thenReturn(Mono.just(fillPage(ListOrganizationSpaceQuotaDefinitionsResponse.builder()).build()));
         }
 
         @Override
         protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalArgumentException.class);
+                .assertError(IllegalArgumentException.class);
         }
 
         @Override
@@ -129,33 +129,33 @@ public final class DefaultSpaceQuotasTest {
         @Before
         public void setUp() throws Exception {
             ListOrganizationSpaceQuotaDefinitionsRequest request1 = fillPage(ListOrganizationSpaceQuotaDefinitionsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .build();
             ListOrganizationSpaceQuotaDefinitionsResponse response1 = fillPage(ListOrganizationSpaceQuotaDefinitionsResponse.builder())
-                    .resource(fill(SpaceQuotaDefinitionResource.builder(), "spaceQuotaDefinition1-").build())
-                    .totalPages(2)
-                    .build();
+                .resource(fill(SpaceQuotaDefinitionResource.builder(), "spaceQuotaDefinition1-").build())
+                .totalPages(2)
+                .build();
             ListOrganizationSpaceQuotaDefinitionsRequest request2 = fillPage(ListOrganizationSpaceQuotaDefinitionsRequest.builder())
-                    .organizationId(TEST_ORGANIZATION_ID)
-                    .page(2)
-                    .build();
+                .organizationId(TEST_ORGANIZATION_ID)
+                .page(2)
+                .build();
             ListOrganizationSpaceQuotaDefinitionsResponse response2 = fillPage(ListOrganizationSpaceQuotaDefinitionsResponse.builder())
-                    .resource(fill(SpaceQuotaDefinitionResource.builder(), "spaceQuotaDefinition2-").build())
-                    .totalPages(2)
-                    .build();
+                .resource(fill(SpaceQuotaDefinitionResource.builder(), "spaceQuotaDefinition2-").build())
+                .totalPages(2)
+                .build();
             when(this.cloudFoundryClient.organizations()
-                    .listSpaceQuotaDefinitions(request1))
-                    .thenReturn(Mono.just(response1));
+                .listSpaceQuotaDefinitions(request1))
+                .thenReturn(Mono.just(response1));
             when(this.cloudFoundryClient.organizations()
-                    .listSpaceQuotaDefinitions(request2))
-                    .thenReturn(Mono.just(response2));
+                .listSpaceQuotaDefinitions(request2))
+                .thenReturn(Mono.just(response2));
         }
 
         @Override
         protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) throws Exception {
             testSubscriber
-                    .assertEquals(fill(SpaceQuota.builder(), "spaceQuotaDefinition1-").build())
-                    .assertEquals(fill(SpaceQuota.builder(), "spaceQuotaDefinition2-").build())
+                .assertEquals(fill(SpaceQuota.builder(), "spaceQuotaDefinition1-").build())
+                .assertEquals(fill(SpaceQuota.builder(), "spaceQuotaDefinition2-").build())
             ;
         }
 
@@ -173,7 +173,7 @@ public final class DefaultSpaceQuotasTest {
         @Override
         protected void assertions(TestSubscriber<SpaceQuota> testSubscriber) throws Exception {
             testSubscriber
-                    .assertError(IllegalStateException.class);
+                .assertError(IllegalStateException.class);
         }
 
         @Override

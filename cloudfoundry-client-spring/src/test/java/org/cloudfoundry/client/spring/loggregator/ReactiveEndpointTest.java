@@ -52,8 +52,8 @@ public final class ReactiveEndpointTest {
         this.reactiveEndpoint.onClose(this.session, new CloseReason(CloseReason.CloseCodes.NO_STATUS_CODE, "test-reason-phrase"));
 
         this.testSubscriber
-                .assertError(Exception.class)
-                .verify(1, SECONDS);
+            .assertError(Exception.class)
+            .verify(1, SECONDS);
     }
 
     @Test
@@ -61,8 +61,8 @@ public final class ReactiveEndpointTest {
         this.reactiveEndpoint.onError(this.session, new RuntimeException());
 
         this.testSubscriber
-                .assertError(Exception.class)
-                .verify(5, SECONDS);
+            .assertError(Exception.class)
+            .verify(5, SECONDS);
     }
 
     @Test

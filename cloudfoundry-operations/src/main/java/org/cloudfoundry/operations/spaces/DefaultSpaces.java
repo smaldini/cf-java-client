@@ -71,17 +71,17 @@ public final class DefaultSpaces implements Spaces {
     @Override
     public Mono<SpaceDetail> get(GetSpaceRequest request) {
         return Validators
-                .validate(request)
-                .and(this.organizationId)
-                .then(requestSpaceResourceWithContext(this.cloudFoundryClient))
-                .then(getAuxiliaryContent(this.cloudFoundryClient));
+            .validate(request)
+            .and(this.organizationId)
+            .then(requestSpaceResourceWithContext(this.cloudFoundryClient))
+            .then(getAuxiliaryContent(this.cloudFoundryClient));
     }
 
     @Override
     public Publisher<SpaceSummary> list() {
         return this.organizationId
-                .flatMap(requestSpaceResources(this.cloudFoundryClient))
-                .map(toSpaceSummary());
+            .flatMap(requestSpaceResources(this.cloudFoundryClient))
+            .map(toSpaceSummary());
     }
 
     private static Function<ApplicationResource, String> extractApplicationName() {
@@ -145,10 +145,10 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<SpaceDetail> apply(SpaceResource spaceResource, GetSpaceRequest request) {
                 return Mono
-                        .when(requestApplicationNames(cloudFoundryClient, spaceResource), requestDomainNames(cloudFoundryClient, spaceResource),
-                                requestOrganizationName(cloudFoundryClient, spaceResource), requestSecurityGroups(cloudFoundryClient, spaceResource),
-                                requestServiceNames(cloudFoundryClient, spaceResource), requestSpaceQuotaDefinition(cloudFoundryClient, request, spaceResource))
-                        .map(toSpaceDetail(spaceResource));
+                    .when(requestApplicationNames(cloudFoundryClient, spaceResource), requestDomainNames(cloudFoundryClient, spaceResource),
+                        requestOrganizationName(cloudFoundryClient, spaceResource), requestSecurityGroups(cloudFoundryClient, spaceResource),
+                        requestServiceNames(cloudFoundryClient, spaceResource), requestSpaceQuotaDefinition(cloudFoundryClient, request, spaceResource))
+                    .map(toSpaceDetail(spaceResource));
             }
 
         });
@@ -156,25 +156,25 @@ public final class DefaultSpaces implements Spaces {
 
     private static Mono<List<String>> requestApplicationNames(final CloudFoundryClient cloudFoundryClient, final SpaceResource spaceResource) {
         return Paginated
-                .requestResources(requestSpaceApplicationPage(cloudFoundryClient, spaceResource))
-                .map(extractApplicationName())
-                .toList();
+            .requestResources(requestSpaceApplicationPage(cloudFoundryClient, spaceResource))
+            .map(extractApplicationName())
+            .toList();
     }
 
     private static Mono<List<String>> requestDomainNames(final CloudFoundryClient cloudFoundryClient, final SpaceResource spaceResource) {
         return Paginated
-                .requestResources(requestSpaceDomainPage(cloudFoundryClient, spaceResource))
-                .map(extractDomainName())
-                .toList();
+            .requestResources(requestSpaceDomainPage(cloudFoundryClient, spaceResource))
+            .map(extractDomainName())
+            .toList();
     }
 
     private static Mono<String> requestOrganizationName(CloudFoundryClient cloudFoundryClient, SpaceResource spaceResource) {
         GetOrganizationRequest request = GetOrganizationRequest.builder()
-                .organizationId(Resources.getEntity(spaceResource).getOrganizationId())
-                .build();
+            .organizationId(Resources.getEntity(spaceResource).getOrganizationId())
+            .build();
 
         return cloudFoundryClient.organizations().get(request)
-                .map(extractOrganizationName());
+            .map(extractOrganizationName());
     }
 
     private static Function<Integer, Mono<ListOrganizationSpacesResponse>> requestOrganizationSpacePage(final CloudFoundryClient cloudFoundryClient, final String organizationId,
@@ -184,10 +184,10 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<ListOrganizationSpacesResponse> apply(Integer page) {
                 ListOrganizationSpacesRequest listOrganizationSpacesRequest = ListOrganizationSpacesRequest.builder()
-                        .organizationId(organizationId)
-                        .name(getSpaceRequest.getName())
-                        .page(page)
-                        .build();
+                    .organizationId(organizationId)
+                    .name(getSpaceRequest.getName())
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.organizations().listSpaces(listOrganizationSpacesRequest);
             }
@@ -197,16 +197,16 @@ public final class DefaultSpaces implements Spaces {
 
     private static Mono<List<String>> requestSecurityGroups(final CloudFoundryClient cloudFoundryClient, final SpaceResource spaceResource) {
         return Paginated
-                .requestResources(requestSpaceSecurityGroupsPage(cloudFoundryClient, spaceResource))
-                .map(extractSecurityGroupName())
-                .toList();
+            .requestResources(requestSpaceSecurityGroupsPage(cloudFoundryClient, spaceResource))
+            .map(extractSecurityGroupName())
+            .toList();
     }
 
     private static Mono<List<String>> requestServiceNames(final CloudFoundryClient cloudFoundryClient, final SpaceResource spaceResource) {
         return Paginated
-                .requestResources(requestSpaceServicesPage(cloudFoundryClient, spaceResource))
-                .map(extractServiceName())
-                .toList();
+            .requestResources(requestSpaceServicesPage(cloudFoundryClient, spaceResource))
+            .map(extractServiceName())
+            .toList();
     }
 
     private static Function<Integer, Mono<ListSpaceApplicationsResponse>> requestSpaceApplicationPage(final CloudFoundryClient cloudFoundryClient, final SpaceResource spaceResource) {
@@ -215,9 +215,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<ListSpaceApplicationsResponse> apply(Integer page) {
                 ListSpaceApplicationsRequest request = ListSpaceApplicationsRequest.builder()
-                        .spaceId(Resources.getId(spaceResource))
-                        .page(page)
-                        .build();
+                    .spaceId(Resources.getId(spaceResource))
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().listApplications(request);
             }
@@ -231,9 +231,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<ListSpaceDomainsResponse> apply(Integer page) {
                 ListSpaceDomainsRequest request = ListSpaceDomainsRequest.builder()
-                        .spaceId(Resources.getId(spaceResource))
-                        .page(page)
-                        .build();
+                    .spaceId(Resources.getId(spaceResource))
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().listDomains(request);
             }
@@ -247,9 +247,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<ListSpacesResponse> apply(Integer page) {
                 ListSpacesRequest request = ListSpacesRequest.builder()
-                        .organizationId(organizationId)
-                        .page(page)
-                        .build();
+                    .organizationId(organizationId)
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().list(request);
             }
@@ -263,12 +263,12 @@ public final class DefaultSpaces implements Spaces {
         }
 
         GetSpaceQuotaDefinitionRequest request = GetSpaceQuotaDefinitionRequest.builder()
-                .spaceQuotaDefinitionId(Resources.getEntity(spaceResource).getSpaceQuotaDefinitionId())
-                .build();
+            .spaceQuotaDefinitionId(Resources.getEntity(spaceResource).getSpaceQuotaDefinitionId())
+            .build();
 
         return cloudFoundryClient.spaceQuotaDefinitions().get(request)
-                .map(toSpaceQuotaDefinition())
-                .map(Optionals.<SpaceQuota>toOptional());
+            .map(toSpaceQuotaDefinition())
+            .map(Optionals.<SpaceQuota>toOptional());
     }
 
     private static Function<Tuple2<GetSpaceRequest, String>, Mono<Tuple2<SpaceResource, GetSpaceRequest>>> requestSpaceResourceWithContext(final CloudFoundryClient cloudFoundryClient) {
@@ -277,9 +277,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<Tuple2<SpaceResource, GetSpaceRequest>> apply(GetSpaceRequest request, String organizationId) {
                 return Paginated
-                        .requestResources(requestOrganizationSpacePage(cloudFoundryClient, organizationId, request))
-                        .single()
-                        .and(Mono.just(request));
+                    .requestResources(requestOrganizationSpacePage(cloudFoundryClient, organizationId, request))
+                    .single()
+                    .and(Mono.just(request));
             }
 
         });
@@ -302,9 +302,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<ListSpaceSecurityGroupsResponse> apply(Integer page) {
                 ListSpaceSecurityGroupsRequest request = ListSpaceSecurityGroupsRequest.builder()
-                        .spaceId(Resources.getId(spaceResource))
-                        .page(page)
-                        .build();
+                    .spaceId(Resources.getId(spaceResource))
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().listSecurityGroups(request);
             }
@@ -318,9 +318,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public Mono<ListSpaceServicesResponse> apply(Integer page) {
                 ListSpaceServicesRequest request = ListSpaceServicesRequest.builder()
-                        .spaceId(Resources.getId(spaceResource))
-                        .page(page)
-                        .build();
+                    .spaceId(Resources.getId(spaceResource))
+                    .page(page)
+                    .build();
 
                 return cloudFoundryClient.spaces().listServices(request);
             }
@@ -334,15 +334,15 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public SpaceDetail apply(List<String> applications, List<String> domains, String organization, List<String> securityGroups, List<String> services, Optional<SpaceQuota> spaceQuota) {
                 return SpaceDetail.builder()
-                        .applications(applications)
-                        .domains(domains)
-                        .id(Resources.getId(spaceResource))
-                        .name(Resources.getEntity(spaceResource).getName())
-                        .organization(organization)
-                        .securityGroups(securityGroups)
-                        .services(services)
-                        .spaceQuota(spaceQuota)
-                        .build();
+                    .applications(applications)
+                    .domains(domains)
+                    .id(Resources.getId(spaceResource))
+                    .name(Resources.getEntity(spaceResource).getName())
+                    .organization(organization)
+                    .securityGroups(securityGroups)
+                    .services(services)
+                    .spaceQuota(spaceQuota)
+                    .build();
             }
 
         });
@@ -355,15 +355,15 @@ public final class DefaultSpaces implements Spaces {
             public SpaceQuota apply(GetSpaceQuotaDefinitionResponse getSpaceQuotaDefinitionResponse) {
                 SpaceQuotaDefinitionEntity entity = Resources.getEntity(getSpaceQuotaDefinitionResponse);
                 return SpaceQuota.builder()
-                        .id(Resources.getId(getSpaceQuotaDefinitionResponse))
-                        .instanceMemoryLimit(entity.getInstanceMemoryLimit())
-                        .name(entity.getName())
-                        .organizationId(entity.getOrganizationId())
-                        .paidServicePlans(entity.getNonBasicServicesAllowed())
-                        .totalMemoryLimit(entity.getMemoryLimit())
-                        .totalRoutes(entity.getTotalRoutes())
-                        .totalServiceInstances(entity.getTotalServices())
-                        .build();
+                    .id(Resources.getId(getSpaceQuotaDefinitionResponse))
+                    .instanceMemoryLimit(entity.getInstanceMemoryLimit())
+                    .name(entity.getName())
+                    .organizationId(entity.getOrganizationId())
+                    .paidServicePlans(entity.getNonBasicServicesAllowed())
+                    .totalMemoryLimit(entity.getMemoryLimit())
+                    .totalRoutes(entity.getTotalRoutes())
+                    .totalServiceInstances(entity.getTotalServices())
+                    .build();
             }
 
         };
@@ -375,9 +375,9 @@ public final class DefaultSpaces implements Spaces {
             @Override
             public SpaceSummary apply(SpaceResource resource) {
                 return SpaceSummary.builder()
-                        .id(Resources.getId(resource))
-                        .name(Resources.getEntity(resource).getName())
-                        .build();
+                    .id(Resources.getId(resource))
+                    .name(Resources.getEntity(resource).getName())
+                    .build();
             }
 
         };
