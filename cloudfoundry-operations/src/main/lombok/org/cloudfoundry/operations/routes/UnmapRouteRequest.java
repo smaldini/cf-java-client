@@ -52,7 +52,7 @@ public final class UnmapRouteRequest implements Validatable {
     private final String host;
     
     @Builder
-    UnmapRouteRequest(String applicationName, String domain, String host) {
+    public UnmapRouteRequest(String applicationName, String domain, String host) {
         this.applicationName = applicationName;
         this.domain = domain;
         this.host = host;
