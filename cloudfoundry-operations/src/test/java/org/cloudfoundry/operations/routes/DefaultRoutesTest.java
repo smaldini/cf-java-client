@@ -525,6 +525,43 @@ public final class DefaultRoutesTest {
 
     }
 
+    public static final class DeleteRouteInvalidDomain extends AbstractOperationsApiTest<Void> {
+
+        private final DefaultRoutes routes = new DefaultRoutes(this.cloudFoundryClient, Mono.just(TEST_ORGANIZATION_ID), Mono.just(TEST_SPACE_ID));
+
+        @Before
+        public void setUp() throws Exception {
+            ListOrganizationPrivateDomainsRequest request1 = fillPage(ListOrganizationPrivateDomainsRequest.builder())
+                    .organizationId(TEST_ORGANIZATION_ID)
+                    .name("test-domain")
+                    .build();
+            ListOrganizationPrivateDomainsResponse response1 = fillPage(ListOrganizationPrivateDomainsResponse.builder(), "privateDomain-")
+                    .build();
+            when(this.organizations.listPrivateDomains(request1)).thenReturn(Mono.just(response1));
+
+            ListSharedDomainsRequest request2 = fillPage(ListSharedDomainsRequest.builder())
+                    .name("test-domain")
+                    .build();
+            ListSharedDomainsResponse response2 = fillPage(ListSharedDomainsResponse.builder(), "sharedDomains-")
+                    .build();
+            when(this.sharedDomains.list(request2)).thenReturn(Mono.just(response2));
+        }
+
+        @Override
+        protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
+            testSubscriber
+                    .assertError(IllegalArgumentException.class);
+        }
+
+        @Override
+        protected Publisher<Void> invoke() {
+            DeleteRouteRequest request = fill(DeleteRouteRequest.builder())
+                    .build();
+
+            return this.routes.delete(request);
+        }
+    }
+
     public static final class ListCurrentOrganization extends AbstractOperationsApiTest<Route> {
 
         private final DefaultRoutes routes = new DefaultRoutes(this.cloudFoundryClient, Mono.just(TEST_ORGANIZATION_ID), MISSING_ID);

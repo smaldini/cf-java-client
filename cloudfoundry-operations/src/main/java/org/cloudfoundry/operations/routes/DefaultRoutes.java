@@ -95,6 +95,14 @@ public final class DefaultRoutes implements Routes {
     }
 
     @Override
+    public Mono<Void> delete(DeleteRouteRequest request) {
+        return Mono
+                .when(Validators.validate(request), this.organizationId)
+                .then(requestRouteId(this.cloudFoundryClient))
+                .then(requestDeleteRoute(this.cloudFoundryClient));
+    }
+
+    @Override
     public Publisher<Route> list(ListRoutesRequest request) {
         return Validators
                 .validate(request)
@@ -334,6 +342,25 @@ public final class DefaultRoutes implements Routes {
         };
     }
 
+    private static Function<Integer, Mono<ListRoutesResponse>> requestListRoutesPageDeleteRoute(final CloudFoundryClient cloudFoundryClient, final String domainId, final DeleteRouteRequest
+            deleteRouteRequest) {
+        return new Function<Integer, Mono<ListRoutesResponse>>() {
+
+            @Override
+            public Mono<ListRoutesResponse> apply(Integer page) {
+                org.cloudfoundry.client.v2.routes.ListRoutesRequest request = org.cloudfoundry.client.v2.routes.ListRoutesRequest.builder()
+                        .domainId(domainId)
+                        .host(deleteRouteRequest.getHost())
+                        .page(page)
+                        .path(deleteRouteRequest.getPath())
+                        .build();
+
+                return cloudFoundryClient.routes().list(request);
+            }
+
+        };
+    }
+
     private static Function<Integer, Mono<ListSpaceApplicationsResponse>> requestListSpaceApplicationsPage(final CloudFoundryClient cloudFoundryClient, final String application,
                                                                                                            final String spaceId) {
         return new Function<Integer, Mono<ListSpaceApplicationsResponse>>() {
@@ -417,6 +444,27 @@ public final class DefaultRoutes implements Routes {
                 return cloudFoundryClient.routes().removeApplication(request);
             }
 
+        });
+    }
+
+    private static Function<Tuple2<DeleteRouteRequest, String>, Mono<String>> requestRouteId(final CloudFoundryClient cloudFoundryClient) {
+        return function(new Function2<DeleteRouteRequest, String, Mono<String>>() {
+
+            @Override
+            public Mono<String> apply(final DeleteRouteRequest deleteRouteRequest, String organizationId) {
+                return requestValidDomainId(cloudFoundryClient, organizationId, deleteRouteRequest.getDomain())
+                        .then(new Function<String, Mono<String>>() {
+
+                            @Override
+                            public Mono<String> apply(String domainId) {
+                                return Paginated
+                                        .requestResources(requestListRoutesPageDeleteRoute(cloudFoundryClient, domainId, deleteRouteRequest))
+                                        .single()
+                                        .map(Resources.extractId());
+                            }
+
+                        });
+            }
         });
     }
 
@@ -595,6 +643,21 @@ public final class DefaultRoutes implements Routes {
             }
 
         });
+    }
+
+    private Function<String, Mono<Void>> requestDeleteRoute(final CloudFoundryClient cloudFoundryClient) {
+        return new Function<String, Mono<Void>>() {
+
+            @Override
+            public Mono<Void> apply(String routeId) {
+                org.cloudfoundry.client.v2.routes.DeleteRouteRequest request = org.cloudfoundry.client.v2.routes.DeleteRouteRequest.builder()
+                        .routeId(routeId)
+                        .async("true") //TODO: Hmm
+                        .build();
+
+                return cloudFoundryClient.routes().delete(request);
+            }
+        };
     }
 
 }

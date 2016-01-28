@@ -41,6 +41,14 @@ public interface Routes {
     Mono<Void> create(CreateRouteRequest request);
 
     /**
+     * Remove a route
+     *
+     * @param request the Remove Route request
+     * @return a completion indicator
+     */
+    Mono<Void> delete(DeleteRouteRequest request);
+
+    /**
      * Lists the routes and the applications bound to those routes
      *
      * @param request the List Routes request
@@ -55,8 +63,8 @@ public interface Routes {
      * @return a completion indicator
      */
     Mono<Void> map(MapRouteRequest request);
-    
-  /**
+
+    /**
      * Remove a URL route from an application
      *
      * @param request the Unmap Route request
