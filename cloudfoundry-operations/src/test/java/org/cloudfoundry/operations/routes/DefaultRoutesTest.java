@@ -525,6 +525,34 @@ public final class DefaultRoutesTest {
 
     }
 
+    public static final class DeleteOrphanedRoutes extends AbstractOperationsApiTest<Void> {
+
+        private final DefaultRoutes routes = new DefaultRoutes(this.cloudFoundryClient, Mono.just(TEST_ORGANIZATION_ID), Mono.just(TEST_SPACE_ID));
+
+        @Before
+        public void setUp() throws Exception {
+            ListSpaceRoutesRequest request1 = fillPage(ListSpaceRoutesRequest.builder())
+                    .spaceId("test-space-id")
+                    .build();
+            ListSpaceRoutesResponse response1 = fillPage(ListSpaceRoutesResponse.builder())
+                    .resource(fill(RouteResource.builder(), "route-").build())
+                    .build();
+            when(this.cloudFoundryClient.spaces().listRoutes(request1)).thenReturn(Mono.just(response1));
+        }
+
+        @Override
+        protected void assertions(TestSubscriber<Void> testSubscriber) throws Exception {
+            // Expects onComplete() with no onNext()
+        }
+
+        @Override
+        protected Publisher<Void> invoke() {
+            return this.routes.deleteOrphanedRoutes();
+        }
+
+    }
+
+
     public static final class ListCurrentOrganization extends AbstractOperationsApiTest<Route> {
 
         private final DefaultRoutes routes = new DefaultRoutes(this.cloudFoundryClient, Mono.just(TEST_ORGANIZATION_ID), MISSING_ID);
