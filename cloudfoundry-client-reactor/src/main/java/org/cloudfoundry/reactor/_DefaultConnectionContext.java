@@ -29,9 +29,9 @@ import org.immutables.value.Value;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
-import reactor.ipc.netty.config.ClientOptions;
-import reactor.ipc.netty.config.HttpClientOptions;
-import reactor.ipc.netty.http.HttpClient;
+import reactor.ipc.netty.http.client.HttpClient;
+import reactor.ipc.netty.options.ClientOptions;
+import reactor.ipc.netty.options.HttpClientOptions;
 
 import java.time.Duration;
 import java.util.List;
@@ -103,7 +103,7 @@ abstract class _DefaultConnectionContext implements ConnectionContext {
             builder.port(port);
         }
 
-        UriComponents components = normalize(builder);
+        UriComponents components = normalize(builder, getScheme());
         trust(components, getSslCertificateTruster());
 
         return Mono.just(components.toUriString());
@@ -112,7 +112,7 @@ abstract class _DefaultConnectionContext implements ConnectionContext {
     @Override
     public Mono<String> getRoot(String key) {
         return getInfo()
-            .map(info -> normalize(UriComponentsBuilder.fromUriString(info.get(key))))
+            .map(info -> normalize(UriComponentsBuilder.fromUriString(info.get(key)), getScheme()))
             .doOnSuccess(components -> trust(components, getSslCertificateTruster()))
             .map(UriComponents::toUriString)
             .cache();
@@ -141,8 +141,7 @@ abstract class _DefaultConnectionContext implements ConnectionContext {
                 .get(uri)
                 .doOnSubscribe(NetworkLogging.get(uri))
                 .compose(NetworkLogging.response(uri)))
-            .then(inbound -> inbound.receive().aggregate().toInputStream())
-            .map(JsonCodec.decode(getObjectMapper(), Map.class))
+            .compose(JsonCodec.decode(getObjectMapper(), Map.class))
             .map(m -> (Map<String, String>) m)
             .cache();
     }
@@ -161,6 +160,20 @@ abstract class _DefaultConnectionContext implements ConnectionContext {
      * The (optional) proxy configuration
      */
     abstract Optional<ProxyConfiguration> getProxyConfiguration();
+
+    @Value.Derived
+    String getScheme() {
+        if (getSecure().orElse(false)) {
+            return "https";
+        } else {
+            return "http";
+        }
+    }
+
+    /**
+     * Whether the connection to the root API should be secure (i.e. using HTTPS).
+     */
+    abstract Optional<Boolean> getSecure();
 
     /**
      * Whether to skip SSL certificate validation for all hosts reachable from the API host.  Defaults to {@code false}.
@@ -186,10 +199,10 @@ abstract class _DefaultConnectionContext implements ConnectionContext {
      */
     abstract Optional<Duration> getSslHandshakeTimeout();
 
-    private static UriComponents normalize(UriComponentsBuilder builder) {
+    private static UriComponents normalize(UriComponentsBuilder builder, String scheme) {
         UriComponents components = builder.build();
 
-        builder.scheme("https");
+        builder.scheme(scheme);
 
         if (UNDEFINED_PORT == components.getPort()) {
             builder.port(DEFAULT_PORT);

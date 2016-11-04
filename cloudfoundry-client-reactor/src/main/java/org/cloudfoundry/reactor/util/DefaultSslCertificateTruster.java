@@ -19,7 +19,7 @@ package org.cloudfoundry.reactor.util;
 import org.cloudfoundry.reactor.ProxyConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.ipc.netty.config.ClientOptions;
+import reactor.ipc.netty.options.ClientOptions;
 import reactor.ipc.netty.tcp.TcpClient;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -145,7 +145,7 @@ public final class DefaultSslCertificateTruster implements SslCertificateTruster
         CertificateCollectingTrustManager collector = new CertificateCollectingTrustManager(delegate);
 
         getTcpClient(proxyConfiguration, collector, host, port)
-            .start(channel -> channel.receive().then())
+            .newHandler((inbound, outbound) -> inbound.receive().then())
             .block(duration);
 
         X509Certificate[] chain = collector.getCollectedCertificateChain();
