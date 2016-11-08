@@ -40,7 +40,7 @@ final class ReactorDopplerEndpoints extends AbstractDopplerOperations {
 
     Flux<Envelope> containerMetrics(ContainerMetricsRequest request) {
         return get(builder -> builder.pathSegment("apps", request.getApplicationId(), "containermetrics"))
-            .flatMap(inbound -> inbound.receiveMultipart().receive().aggregate().asInputStream())
+            .flatMap(inbound -> inbound.receiveMultipart().receive().asInputStream())
             .map(ReactorDopplerEndpoints::toEnvelope);
     }
 
@@ -52,7 +52,7 @@ final class ReactorDopplerEndpoints extends AbstractDopplerOperations {
 
     Flux<Envelope> recentLogs(RecentLogsRequest request) {
         return get(builder -> builder.pathSegment("apps", request.getApplicationId(), "recentlogs"))
-            .flatMap(inbound -> inbound.receiveMultipart().receive().aggregate().asInputStream())
+            .flatMap(inbound -> inbound.receiveMultipart().receive().asInputStream())
             .map(ReactorDopplerEndpoints::toEnvelope);
     }
 
